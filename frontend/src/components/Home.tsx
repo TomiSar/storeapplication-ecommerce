@@ -1,4 +1,3 @@
-// import products from '../data/products';
 import { useState, useEffect } from 'react';
 import PageHeading from './PageHeading';
 import ProductListings from './ProductListings';
