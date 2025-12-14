@@ -32,9 +32,18 @@
 - npm i (install dependencies)
 - npm run dev
 
-## API endpoints (Expenses)
+## API endpoints (Contacts)
+
+- http://localhost:8080/api/v1/contacts (POST add Contacts)
+- http://localhost:8080/api/v1/contacts (GET all Contacts)
+
+## API endpoints (Products)
 
 - http://localhost:8080/api/v1/products (GET all Products)
+
+## API Spring boot actuator
+
+- http://localhost:8080/backend/actuator
 
 ## Docs
 
