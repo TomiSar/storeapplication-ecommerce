@@ -4,6 +4,8 @@ import com.store.backend.dto.ProductDto;
 import com.store.backend.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +21,9 @@ public class ProductController {
 
     // Get all products
     @GetMapping
-    public List<ProductDto> getProducts() {
+    public ResponseEntity<List<ProductDto>> getProducts() {
         List<ProductDto> productList = productService.getProducts();
         log.info("Found {} products. Products: {} ", productList.size(), productList);
-        return productService.getProducts();
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 }

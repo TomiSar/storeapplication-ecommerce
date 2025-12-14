@@ -3,9 +3,12 @@ package com.store.backend.controller;
 import com.store.backend.dto.ContactRequestDto;
 import com.store.backend.service.ContactService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,22 +23,17 @@ public class ContactController {
     private final ContactService contactService;
 
     @PostMapping
-    public String saveContact(@RequestBody ContactRequestDto contactRequestDto) {
-        boolean isSaved = contactService.saveContact(contactRequestDto);
-        if (isSaved) {
-            log.info("Contact request saved successfully: {}", contactRequestDto);
-            return "Contact saved successfully";
-        } else {
-            log.error("Failed to save contact request: {}", contactRequestDto);
-            return "An error occurred. Please try again later or contact support team.";
-        }
+    public ResponseEntity<String> saveContact(@Valid @RequestBody ContactRequestDto contactRequestDto) {
+        contactService.saveContact(contactRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Contact request saved successfully");
     }
 
     // Get all contacts
     @GetMapping
-    public List<ContactRequestDto> getContacts() {
+    public ResponseEntity<List<ContactRequestDto>> getContacts() {
         List<ContactRequestDto> contacts = contactService.getContacts();
         log.info("Found {} contacts. Contacts: {} ", contacts.size(), contacts);
-        return contacts;
+        return ResponseEntity.status(HttpStatus.OK).body(contacts);
     }
 }

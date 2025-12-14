@@ -9,6 +9,11 @@ interface ContactFormData {
 }
 
 interface ApiError {
+  response?: {
+    data?: {
+      errorMessage?: string;
+    };
+  };
   message?: string;
   status?: number;
 }
@@ -30,8 +35,17 @@ export async function contactAction({ request, params }: ActionFunctionArgs) {
     // return redirect('/home');
   } catch (error) {
     const err = error as ApiError;
+    if (err.status === 400) {
+      return {
+        success: false,
+        errors: err.response?.data,
+      };
+    }
+
     throw new Response(
-      err.message || 'Failed to submit your message. Please try again.',
+      err?.response?.data?.errorMessage ||
+        err.message ||
+        'Failed to submit your message. Please try again.',
       { status: err.status || 500 }
     );
   }

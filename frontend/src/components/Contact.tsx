@@ -6,7 +6,16 @@ import { toast } from 'react-toastify';
 
 type ContactActionData =
   | {
-      success: boolean;
+      status: 'success';
+    }
+  | {
+      status: 'error';
+      errors: {
+        name?: string;
+        email?: string;
+        mobileNumber?: string;
+        message?: string;
+      };
     }
   | undefined;
 
@@ -80,6 +89,11 @@ export default function Contact() {
             minLength={5}
             maxLength={30}
           />
+          {actionData?.status === 'error' && actionData.errors.name && (
+            <p className='text-red-500 text-sm mt-1'>
+              {actionData.errors.name}
+            </p>
+          )}
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
           {/* Email */}
@@ -95,6 +109,11 @@ export default function Contact() {
               className={textFieldStyle}
               required
             />
+            {actionData?.status === 'error' && actionData.errors.email && (
+              <p className='text-red-500 text-sm mt-1'>
+                {actionData.errors.email}
+              </p>
+            )}
           </div>
           {/* Mobile Number */}
           <div>
@@ -111,6 +130,12 @@ export default function Contact() {
               placeholder='Your Mobile Number'
               className={textFieldStyle}
             />
+            {actionData?.status === 'error' &&
+              actionData.errors.mobileNumber && (
+                <p className='text-red-500 text-sm mt-1'>
+                  {actionData.errors.mobileNumber}
+                </p>
+              )}
           </div>
         </div>
         {/* Message */}
@@ -127,6 +152,11 @@ export default function Contact() {
             minLength={5}
             maxLength={500}
           ></textarea>
+          {actionData?.status === 'error' && actionData.errors.message && (
+            <p className='text-red-500 text-sm mt-1'>
+              {actionData.errors.message}
+            </p>
+          )}
         </div>
         <div className='text-center'>
           <button

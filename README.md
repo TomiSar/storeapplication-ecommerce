@@ -45,6 +45,10 @@
 
 - http://localhost:8080/backend/actuator
 
+## API Swagger
+
+- http://localhost:8080/swagger-ui.html
+
 ## Docs
 
 - [Vite](https://vite.dev/guide/)
@@ -54,6 +58,7 @@
 
 ## Back-end Development
 
+- [SpringDoc -openapi](https://springdoc.org/)
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Spring Initializr](https://start.spring.io/)
 
