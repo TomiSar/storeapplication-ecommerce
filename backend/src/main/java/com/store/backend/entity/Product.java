@@ -13,7 +13,7 @@ import java.time.Instant;
 @Setter
 @Table(name = "PRODUCTS")
 public class Product {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID", nullable = false)

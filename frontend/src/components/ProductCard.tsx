@@ -1,5 +1,6 @@
 import Price from './Price';
 import type { Product } from '../types/products';
+import { Link } from 'react-router-dom';
 
 interface ProductCardProps {
   product: Product;
@@ -7,7 +8,11 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className='w-72 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:hover:border-light  transition'>
+    <Link
+      className='w-72 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:hover:border-light  transition'
+      to={`/product/${product.productId}`}
+      state={{ product }}
+    >
       <div className='relative w-full h-72 border-b border-gray-300 dark:border-gray-600'>
         <img
           className='w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110'
@@ -28,6 +33,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

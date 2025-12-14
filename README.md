@@ -24,6 +24,7 @@
 
 - cd backend
 - mvn spring-boot:run
+- mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=\*:5005" -Dspring-boot.run.fork=true
 
 ## Start frontend (localhost:3000) frontend folder
 

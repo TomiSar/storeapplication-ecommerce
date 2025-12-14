@@ -5,13 +5,19 @@ import errorImage from '../assets/util/error.png';
 import { Link } from 'react-router-dom';
 import { useRouteError } from 'react-router-dom';
 
+interface RouteError {
+  status: number;
+  statusText?: string;
+  data: string;
+}
+
 export default function ErrorPage() {
-  const routeError = useRouteError();
+  const routeError = useRouteError() as RouteError;
   let errorTitle = 'Oops! Something went wrong';
   let errorMessage = 'An unexpected error occurred. Please try again later.';
   if (routeError) {
-    errorTitle = routeError.status;
-    errorMessage = routeError.data;
+    errorTitle = routeError.status.toString() || errorTitle;
+    errorMessage = routeError.data || routeError.statusText || errorMessage;
   }
   return (
     <div className='flex flex-col min-h-[980px]'>
