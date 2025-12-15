@@ -32,6 +32,11 @@
 - npm i (install dependencies)
 - npm run dev
 
+## Frontend format files (Prettier)
+
+- cd frontend
+- npm run format
+
 ## API endpoints (Contacts)
 
 - http://localhost:8080/api/v1/contacts (POST add Contacts)

@@ -46,7 +46,7 @@ export async function contactAction({ request, params }: ActionFunctionArgs) {
       err?.response?.data?.errorMessage ||
         err.message ||
         'Failed to submit your message. Please try again.',
-      { status: err.status || 500 }
+      { status: err.status || 500 },
     );
   }
 }

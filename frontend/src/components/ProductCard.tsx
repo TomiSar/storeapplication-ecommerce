@@ -9,27 +9,23 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
-      className='w-72 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:hover:border-light  transition'
+      className="w-72 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:hover:border-light  transition"
       to={`/product/${product.productId}`}
       state={{ product }}
     >
-      <div className='relative w-full h-72 border-b border-gray-300 dark:border-gray-600'>
+      <div className="relative w-full h-72 border-b border-gray-300 dark:border-gray-600">
         <img
-          className='w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110'
+          className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
           src={product.imageUrl}
           alt={product.name}
         />
       </div>
-      <div className='relative h-48 p-4 flex flex-col font-primary'>
-        <h2 className='text-xl font-semibold text-primary dark:text-light mb-2'>
-          {product.name}
-        </h2>
-        <p className='text-base text-gray-600 dark:text-light mb-4'>
-          {product.description}
-        </p>
-        <div className='flex items-center justify-between mt-auto'>
-          <div className='bg-lighter dark:bg-light text-primary font-medium text-sm py-2 px-4 rounded-md'>
-            <Price price={product.price} currency='€' />
+      <div className="relative h-48 p-4 flex flex-col font-primary">
+        <h2 className="text-xl font-semibold text-primary dark:text-light mb-2">{product.name}</h2>
+        <p className="text-base text-gray-600 dark:text-light mb-4">{product.description}</p>
+        <div className="flex items-center justify-between mt-auto">
+          <div className="bg-lighter dark:bg-light text-primary font-medium text-sm py-2 px-4 rounded-md">
+            <Price price={product.price} currency="€" />
           </div>
         </div>
       </div>

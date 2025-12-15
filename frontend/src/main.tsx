@@ -21,16 +21,16 @@ import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const routeDefinitions = createRoutesFromElements(
-  <Route path='/' element={<App />} errorElement={<ErrorPage />}>
+  <Route path="/" element={<App />} errorElement={<ErrorPage />}>
     {/* index route */}
     <Route element={<Home />} loader={productsLoader} />
-    <Route path='/home' element={<Home />} loader={productsLoader} />
-    <Route path='/about' element={<About />} />
-    <Route path='/contact' element={<Contact />} action={contactAction} />
-    <Route path='/login' element={<Login />} />
-    <Route path='/cart' element={<Cart />} />
-    <Route path='/product/:productId' element={<ProductDetail />} />
-  </Route>
+    <Route path="/home" element={<Home />} loader={productsLoader} />
+    <Route path="/about" element={<About />} />
+    <Route path="/contact" element={<Contact />} action={contactAction} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/cart" element={<Cart />} />
+    <Route path="/product/:productId" element={<ProductDetail />} />
+  </Route>,
 );
 
 const router = createBrowserRouter(routeDefinitions);
@@ -75,7 +75,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
     <ToastContainer
-      position='top-right'
+      position="top-right"
       autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
@@ -84,5 +84,5 @@ createRoot(document.getElementById('root')!).render(
       theme={localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'}
       transition={Bounce}
     />
-  </StrictMode>
+  </StrictMode>,
 );

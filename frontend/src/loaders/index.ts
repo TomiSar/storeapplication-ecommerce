@@ -21,7 +21,7 @@ export const productsLoader = async () => {
       err.response?.data?.errorMessage ||
         err.message ||
         'Failed to fetch products. Please try again.',
-      { status: err.status || 500 }
+      { status: err.status || 500 },
     );
   }
 };
