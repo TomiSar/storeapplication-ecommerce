@@ -33,7 +33,7 @@ export default function CartTable() {
             >
               <td className="px-4 sm:px-6 py-4 flex items-center">
                 <Link
-                  to={`/products/${item.productId}`}
+                  to={`/product/${item.productId}`}
                   state={{ product: item }}
                   className="flex items-center"
                 >

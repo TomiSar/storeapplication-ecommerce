@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import CartTable from './CartTable';
 
 export default function Cart() {
-  const { cart } = useCart();
+  const { cart, clearCart } = useCart();
   const isCartEmpty = useMemo(() => cart.length === 0, [cart]);
 
   return (
@@ -24,6 +24,13 @@ export default function Cart() {
               >
                 Back to Products
               </Link>
+              {/* Clear Cart Button */}
+              <button
+                className="py-2 px-4 bg-red-500 dark:bg-red-500 text-white dark:text-black text-xl font-semibold rounded-sm flex justify-center items-center hover:bg-red-600 dark:hover:bg-red-600 transition"
+                onClick={() => clearCart()}
+              >
+                Clear Cart
+              </button>
               {/* Proceed to Checkout Button */}
               <button className="py-2 px-4 bg-primary dark:bg-light text-white dark:text-black text-xl font-semibold rounded-sm flex justify-center items-center hover:bg-dark dark:hover:bg-lighter transition">
                 Proceed to Checkout
