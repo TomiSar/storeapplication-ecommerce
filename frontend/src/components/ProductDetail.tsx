@@ -3,6 +3,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import type { Product } from '../types';
 import { faArrowLeft, faShoppingCart, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useCart } from '../contexts/cartContext';
 
 interface LocationState {
   product: Product;
@@ -17,6 +18,7 @@ export default function ProductDetail() {
   const zoomRef = useRef(null);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [backgroundPosition, setBackgroundPosition] = useState<string>('center');
+  const { addToCart } = useCart();
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = zoomRef.current.getBoundingClientRect();
@@ -24,6 +26,7 @@ export default function ProductDetail() {
     const y = ((e.pageY - top) / height) * 100;
     setBackgroundPosition(`${x}% ${y}%`);
   };
+
   const handleMouseEnter = () => setIsHovering(true);
 
   const handleMouseLeave = () => {
@@ -32,6 +35,11 @@ export default function ProductDetail() {
   };
 
   const handleViewCart = () => navigate('/cart');
+
+  const handleAddToCart = () => {
+    if (quantity < 1) return;
+    addToCart(product, quantity);
+  };
 
   return (
     <div className="min-h-[852px] flex items-center justify-center px-6 py-8 font-primary bg-normalbg dark:bg-darkbg">
@@ -51,7 +59,6 @@ export default function ProductDetail() {
         >
           <img className="w-full h-full opacity-0" src={product.imageUrl} alt={product.name} />
         </div>
-
         {/* Product Details */}
         <div className="w-full md:w-1/2 flex flex-col space-y-6 mt-8 md:mt-0">
           <Link
@@ -61,7 +68,6 @@ export default function ProductDetail() {
             <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
             Back To All Products
           </Link>
-
           <div>
             <h1 className="text-3xl font-extrabold text-primary dark:text-light mb-4">
               {product.name}
@@ -69,7 +75,6 @@ export default function ProductDetail() {
             <p className="text-lg text-dark dark:text-lighter mb-4">{product.description}</p>
             <div className="text-2xl font-bold text-primary dark:text-light">${product.price}</div>
           </div>
-
           <div className="flex flex-col space-y-4">
             {/* Quantity Input */}
             <div className="flex items-center space-x-4">
@@ -85,13 +90,14 @@ export default function ProductDetail() {
                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
               />
             </div>
-
             {/* Add to Cart Button */}
-            <button className="w-full px-4 py-2 bg-primary dark:bg-light text-white dark:text-black rounded-md text-lg font-semibold hover:bg-dark dark:hover:bg-lighter transition">
+            <button
+              className="w-full px-4 py-2 bg-primary dark:bg-light text-white dark:text-black rounded-md text-lg font-semibold hover:bg-dark dark:hover:bg-lighter transition"
+              onClick={handleAddToCart}
+            >
               Add to Cart
               <FontAwesomeIcon icon={faShoppingCart} className="ml-2" />
             </button>
-
             {/* View Cart Button */}
             <button
               className="w-full px-4 py-2 bg-primary dark:bg-light text-white dark:text-black rounded-md text-lg font-semibold hover:bg-dark dark:hover:bg-lighter transition"

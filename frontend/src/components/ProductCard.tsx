@@ -1,25 +1,28 @@
+import { Link } from 'react-router-dom';
 import Price from './Price';
 import type { Product } from '../types/products';
-import { Link } from 'react-router-dom';
+import { useCart } from '../contexts/cartContext';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { addToCart } = useCart();
+
   return (
-    <Link
-      className="w-72 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:hover:border-light  transition"
-      to={`/product/${product.productId}`}
-      state={{ product }}
-    >
-      <div className="relative w-full h-72 border-b border-gray-300 dark:border-gray-600">
+    <div className="w-72 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:hover:border-light  transition">
+      <Link
+        className="relative w-full h-72 border-b border-gray-300 dark:border-gray-600"
+        to={`/product/${product.productId}`}
+        state={{ product }}
+      >
         <img
           className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
           src={product.imageUrl}
           alt={product.name}
         />
-      </div>
+      </Link>
       <div className="relative h-48 p-4 flex flex-col font-primary">
         <h2 className="text-xl font-semibold text-primary dark:text-light mb-2">{product.name}</h2>
         <p className="text-base text-gray-600 dark:text-light mb-4">{product.description}</p>
@@ -27,8 +30,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="bg-lighter dark:bg-light text-primary font-medium text-sm py-2 px-4 rounded-md">
             <Price price={product.price} currency="€" />
           </div>
+          <button
+            className="bg-primary dark:bg-light text-white dark:text-primary font-medium text-sm py-2 px-4 rounded-md hover:cursor-pointer"
+            onClick={() => addToCart(product, 1)}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
