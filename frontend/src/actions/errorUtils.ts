@@ -3,12 +3,30 @@ import type { ActionResult } from './types';
 
 export type ApiError<T> = AxiosError<T>;
 
+function getErrorMessage(status?: number): string {
+  switch (status) {
+    case 400:
+      return 'Bad Request';
+    case 401:
+      return 'Invalid username or password';
+    case 403:
+      return 'Invalid credentials to perform this action';
+    case 404:
+      return 'Resource Not Found';
+    case 500:
+      return 'Internal Server Error. Please try again';
+    default:
+      return 'Something went wrong. Please try again';
+  }
+}
+
 export function mapApiError<TSuccess, TErrors extends object>(
   error: unknown,
-  fallbackMessage = 'Something went wrong',
+  fallbackMessage?: string,
 ): ActionResult<TSuccess, TErrors> {
   const err = error as ApiError<TErrors>;
 
+  // Validation errors (400)
   if (err.response?.status === 400 && err.response.data) {
     return {
       success: false,
@@ -16,14 +34,17 @@ export function mapApiError<TSuccess, TErrors extends object>(
     } as ActionResult<TSuccess, TErrors>;
   }
 
+  // Backend-provided error message
+  const backendMessage =
+    typeof err.response?.data === 'object' &&
+    err.response?.data &&
+    'errorMessage' in err.response.data
+      ? String((err.response.data as { errorMessage?: unknown }).errorMessage)
+      : undefined;
+
   return {
     success: false,
     errors: {} as TErrors,
-    message:
-      (typeof err.response?.data === 'object' &&
-      err.response?.data &&
-      'errorMessage' in err.response.data
-        ? String((err.response.data as { errorMessage?: unknown }).errorMessage)
-        : err.message) || fallbackMessage,
+    message: backendMessage ?? fallbackMessage ?? getErrorMessage(err.response?.status),
   } as ActionResult<TSuccess, TErrors>;
 }

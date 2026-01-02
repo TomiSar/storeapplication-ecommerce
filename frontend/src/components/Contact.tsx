@@ -1,9 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { useActionData, useNavigation, useSubmit } from 'react-router-dom';
-import { Form } from 'react-router-dom';
+import { useActionData, useNavigation, useSubmit, Form } from 'react-router-dom';
 import PageTitle from './PageTitle';
-import { toast } from 'react-toastify';
 import type { ActionResult } from '../actions/types';
+import { toastInfo, toastSuccess } from '../utils/toast';
 
 export default function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -27,33 +26,28 @@ export default function Contact() {
 
     if (actionData?.success) {
       formRef.current?.reset();
-      toast.success('Your message has been submitted successfully!', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
+      toastSuccess('Your message has been submitted successfully!');
     }
   }, [actionData]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const userConfirmed = window.confirm('Are you sure you want to submit the form?');
 
     if (userConfirmed) {
       if (formRef.current) {
         const formData = new FormData(formRef.current);
-        console.log('Submit data!!');
-        console.log(formData);
         submit(formData, { method: 'post' });
       }
     } else {
-      toast.info('Form submission cancelled.');
+      toastInfo('Form submission cancelled.');
     }
   };
 
   const labelStyle = 'block text-lg font-semibold text-primary dark:text-light mb-2';
   const textFieldStyle =
     'w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-gray-600 placeholder-gray-400 dark:placeholder-gray-300';
+
   return (
     <div className="max-w-[1152px] min-h-[852px] mx-auto px-6 py-8 font-primary bg-normalbg dark:bg-darkbg">
       <PageTitle title="Contact Us" />

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Link, Form, useNavigate, useNavigation, useActionData } from 'react-router-dom';
+import { useNavigate, useNavigation, useActionData, Link, Form } from 'react-router-dom';
 import PageTitle from './PageTitle';
-import { toast } from 'react-toastify';
 import type { ActionResult } from '../actions/types';
+import { toastError, toastSuccess } from '../utils/toast';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,20 +17,13 @@ export default function Login() {
 
     if (actionData?.success) {
       navigate('/home');
-      toast.success('Login successful', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
+      toastSuccess('Login successful');
     } else {
-      toast.error(actionData.message ?? 'Login failed', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
+      toastError(actionData.message ?? 'Login failed');
     }
   }, [actionData, navigate]);
 
   const labelStyle = 'block text-lg font-semibold text-primary dark:text-light mb-2';
-
   const textFieldStyle =
     'w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-gray-600 placeholder-gray-400 dark:placeholder-gray-300';
 
@@ -47,13 +40,13 @@ export default function Login() {
               Username
             </label>
             <input
+              className={textFieldStyle}
               id="username"
               type="text"
               name="username"
               placeholder="Your Username"
               autoComplete="username"
               required
-              className={textFieldStyle}
             />
           </div>
           {/* Password Field */}
@@ -69,7 +62,7 @@ export default function Login() {
               placeholder="Your Password"
               autoComplete="current-password"
               required
-              minLength={8}
+              minLength={4}
               maxLength={20}
             />
           </div>

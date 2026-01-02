@@ -46,8 +46,8 @@ public class StoreApplicationSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        var user1 = User.builder().username("user")
-                .password("$2a$12$RRta5RQNRFiioalDA5bK7OFuVBG.Ds54xT70x4rYZMpVipiJnHPju").roles("USER").build();
+        var user1 = User.builder().username("testuser")
+                .password("$2a$12$q7/GfzfOQI0yO3AJRbSiK.IZ1tkBzr7vai11IdV7tu6IxwgNuk09a").roles("USER").build();
         var user2 = User.builder().username("admin")
                 .password("$2a$12$ocSAp.dtD8LU4IH0orD4wOX11YAZgt1Y3XWVHiduIwninjlrgnZJK").roles("USER", "ADMIN").build();
         return new InMemoryUserDetailsManager(user1, user2);
@@ -58,14 +58,14 @@ public class StoreApplicationSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(
-//            UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-//        var daoAuthenticationProvider = new DaoAuthenticationProvider();
-//        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-//        return new ProviderManager(daoAuthenticationProvider);
-//    }
+    @Bean
+    public AuthenticationManager authenticationManager(
+            UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        var daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(daoAuthenticationProvider);
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

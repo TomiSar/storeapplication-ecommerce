@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +20,35 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-//    private final AuthenticationManager authenticationManager;
-//    private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
+    private final AuthenticationManager authenticationManager;
+    //    private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
     private final PasswordEncoder passwordEncoder;
 //    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> apiLogin(@RequestBody LoginRequestDto loginRequestDto) {
 
+        try {
+            Authentication authentication = authenticationManager.authenticate(new
+                    UsernamePasswordAuthenticationToken(loginRequestDto.username(),
+                    loginRequestDto.password()));
+        } catch (BadCredentialsException exception) {
+            return buildErrorResponse(HttpStatus.UNAUTHORIZED,
+                    "Invalid username or password");
+        } catch (AuthenticationException exception) {
+            return buildErrorResponse(HttpStatus.UNAUTHORIZED,
+                    "Authentication failed");
+        } catch (Exception exception) {
+            return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "An unexpected error occurred");
+        }
+
+        // If authentication is successful, generate JWT token (omitted here)
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new LoginResponseDto(HttpStatus.OK.getReasonPhrase(), null, null));
+    }
+
+    private ResponseEntity<LoginResponseDto> buildErrorResponse(HttpStatus status, String message) {
+        return ResponseEntity.status(status).body(new LoginResponseDto(message, null, null));
     }
 }
