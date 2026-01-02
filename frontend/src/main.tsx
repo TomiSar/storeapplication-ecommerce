@@ -16,19 +16,18 @@ import Cart from './components/Cart';
 import ErrorPage from './components/ErrorPage';
 import ProductDetail from './components/ProductDetail.tsx';
 import { productsLoader } from './loaders/index.ts';
-import { contactAction } from './actions/index.ts';
+import { contactAction, loginAction } from './actions/index.ts';
 import { ToastContainer, Bounce } from 'react-toastify';
 import { CartProvider } from './store/cartContext.tsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 const routeDefinitions = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
-    {/* index route */}
-    <Route element={<Home />} loader={productsLoader} />
+    <Route index element={<Home />} loader={productsLoader} />
     <Route path="/home" element={<Home />} loader={productsLoader} />
     <Route path="/about" element={<About />} />
     <Route path="/contact" element={<Contact />} action={contactAction} />
-    <Route path="/login" element={<Login />} />
+    <Route path="/login" element={<Login />} action={loginAction} />
     <Route path="/cart" element={<Cart />} />
     <Route path="/product/:productId" element={<ProductDetail />} />
   </Route>,

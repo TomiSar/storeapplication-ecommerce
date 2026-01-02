@@ -63,6 +63,7 @@
 
 ## Back-end Development
 
+- [Spring Security](https://docs.spring.io/spring-security/reference/index.html)
 - [SpringDoc -openapi](https://springdoc.org/)
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Spring Initializr](https://start.spring.io/)

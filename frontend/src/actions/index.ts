@@ -1,5 +1,15 @@
 import apiClient from '../api/apiClient';
-import { type ActionFunctionArgs } from 'react-router-dom'; //redirect,
+import { type ActionFunctionArgs } from 'react-router-dom';
+import { mapApiError } from './errorUtils';
+import type { ActionResult } from './types';
+
+/* ---------- CONTACT ---------- */
+export interface ContactErrors {
+  name?: string;
+  email?: string;
+  mobileNumber?: string;
+  message?: string;
+}
 
 interface ContactFormData {
   name: string;
@@ -8,45 +18,62 @@ interface ContactFormData {
   message: string;
 }
 
-interface ApiError {
-  response?: {
-    data?: {
-      errorMessage?: string;
-    };
-  };
-  message?: string;
-  status?: number;
-}
-
-export async function contactAction({ request, params }: ActionFunctionArgs) {
+export async function contactAction({
+  request,
+}: ActionFunctionArgs): Promise<ActionResult<void, ContactErrors>> {
   const data = await request.formData();
 
   const contactData: ContactFormData = {
-    name: data.get('name')?.toString() || '',
-    email: data.get('email')?.toString() || '',
-    mobileNumber: data.get('mobileNumber')?.toString() || '',
-    message: data.get('message')?.toString() || '',
+    name: String(data.get('name') ?? ''),
+    email: String(data.get('email') ?? ''),
+    mobileNumber: String(data.get('mobileNumber') ?? ''),
+    message: String(data.get('message') ?? ''),
   };
+
   try {
     await apiClient.post('/contacts', contactData);
+    return { success: true };
+  } catch (error) {
+    return mapApiError<void, ContactErrors>(error, 'Failed to submit contact form');
+  }
+}
+
+/* ---------- LOGIN ---------- */
+interface LoginSuccess {
+  message: string;
+  user: unknown;
+  jwtToken: string;
+}
+
+interface LoginErrors {
+  message?: string;
+}
+
+interface LoginFormData {
+  username: string;
+  password: string;
+}
+
+export async function loginAction({
+  request,
+}: ActionFunctionArgs): Promise<ActionResult<LoginSuccess, LoginErrors>> {
+  const data = await request.formData();
+
+  const loginData: LoginFormData = {
+    username: String(data.get('username') || ''),
+    password: String(data.get('password') || ''),
+  };
+
+  try {
+    const response = await apiClient.post('/auth/login', loginData);
+
     return {
       success: true,
+      message: response.data.message,
+      user: response.data.user,
+      jwtToken: response.data.jwtToken,
     };
-    // return redirect('/home');
   } catch (error) {
-    const err = error as ApiError;
-    if (err.status === 400) {
-      return {
-        success: false,
-        errors: err.response?.data,
-      };
-    }
-
-    throw new Response(
-      err?.response?.data?.errorMessage ||
-        err.message ||
-        'Failed to submit your message. Please try again.',
-      { status: err.status || 500 },
-    );
+    return mapApiError<LoginSuccess, LoginErrors>(error, 'Invalid username or password');
   }
 }

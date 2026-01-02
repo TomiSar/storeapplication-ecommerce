@@ -1,32 +1,30 @@
-import { useActionData, useNavigation, useSubmit } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import { useActionData, useNavigation, useSubmit } from 'react-router-dom';
 import { Form } from 'react-router-dom';
 import PageTitle from './PageTitle';
 import { toast } from 'react-toastify';
-
-type ContactActionData =
-  | {
-      status: 'success';
-    }
-  | {
-      status: 'error';
-      errors: {
-        name?: string;
-        email?: string;
-        mobileNumber?: string;
-        message?: string;
-      };
-    }
-  | undefined;
+import type { ActionResult } from '../actions/types';
 
 export default function Contact() {
-  const actionData = useActionData() as ContactActionData;
   const formRef = useRef<HTMLFormElement>(null);
   const navigation = useNavigation();
   const submit = useSubmit();
   const isSubmitting = navigation.state === 'submitting';
+  const actionData = useActionData() as
+    | ActionResult<
+        void,
+        {
+          name?: string;
+          email?: string;
+          mobileNumber?: string;
+          message?: string;
+        }
+      >
+    | undefined;
 
   useEffect(() => {
+    if (!actionData) return;
+
     if (actionData?.success) {
       formRef.current?.reset();
       toast.success('Your message has been submitted successfully!', {
@@ -63,7 +61,6 @@ export default function Contact() {
         We’d love to hear from you! If you have any questions, feedback, or suggestions, please
         don’t hesitate to reach out.
       </p>
-
       {/* Contact Form */}
       <Form
         className="space-y-6 max-w-[768px] mx-auto"
@@ -77,16 +74,16 @@ export default function Contact() {
             Name
           </label>
           <input
+            className={textFieldStyle}
             id="name"
             name="name"
             type="text"
             placeholder="Your Name"
-            className={textFieldStyle}
             required
             minLength={5}
             maxLength={30}
           />
-          {actionData?.status === 'error' && actionData.errors.name && (
+          {actionData && !actionData.success && actionData.errors?.name && (
             <p className="text-red-500 text-sm mt-1">{actionData.errors.name}</p>
           )}
         </div>
@@ -97,14 +94,14 @@ export default function Contact() {
               Email
             </label>
             <input
+              className={textFieldStyle}
               id="email"
               name="email"
               type="email"
               placeholder="Your Email"
-              className={textFieldStyle}
               required
             />
-            {actionData?.status === 'error' && actionData.errors.email && (
+            {actionData && !actionData.success && actionData.errors?.email && (
               <p className="text-red-500 text-sm mt-1">{actionData.errors.email}</p>
             )}
           </div>
@@ -114,16 +111,16 @@ export default function Contact() {
               Mobile Number
             </label>
             <input
+              className={textFieldStyle}
               id="mobileNumber"
               name="mobileNumber"
               type="tel"
               required
-              pattern="^\d{10}$"
-              title="Mobile number must be exactly 10 digits"
+              pattern="^\d{8,10}$"
+              title="Mobile number must be between 8 and 10 digits"
               placeholder="Your Mobile Number"
-              className={textFieldStyle}
             />
-            {actionData?.status === 'error' && actionData.errors.mobileNumber && (
+            {actionData && !actionData.success && actionData.errors?.mobileNumber && (
               <p className="text-red-500 text-sm mt-1">{actionData.errors.mobileNumber}</p>
             )}
           </div>
@@ -142,7 +139,7 @@ export default function Contact() {
             minLength={5}
             maxLength={500}
           ></textarea>
-          {actionData?.status === 'error' && actionData.errors.message && (
+          {actionData && !actionData.success && actionData.errors?.message && (
             <p className="text-red-500 text-sm mt-1">{actionData.errors.message}</p>
           )}
         </div>
