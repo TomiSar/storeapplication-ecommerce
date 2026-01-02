@@ -9,12 +9,13 @@
 - TypeScript
 - Postman
 
-## **Create env.properties file in restapi folder Add personal env.properties values in file**
+## **Create env.properties file in backend folder Add personal env.properties values in file**
 
 - **DATABASE_URL=jdbc:mysql://localhost:3306**
 - **DATABASE={DATABASE}**
 - **USER={USER}**
 - **PASSWORD={PASSWORD}**
+- **JWT_SECRET={JWT_SECRET}**
 
 ## **Import env.properties in application.properties**
 
@@ -45,6 +46,10 @@
 ## API endpoints (Products)
 
 - http://localhost:8080/api/v1/products (GET all Products)
+
+## API endpoints (Login)
+
+- http://localhost:8080/api/v1/auth/login (POST login)
 
 ## API Spring boot actuator
 

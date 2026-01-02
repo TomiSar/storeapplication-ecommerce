@@ -66,7 +66,6 @@ export async function loginAction({
 
   try {
     const response = await apiClient.post('/auth/login', loginData);
-
     return {
       success: true,
       message: response.data.message,
