@@ -2,7 +2,7 @@ import { toast, type ToastOptions } from 'react-toastify';
 
 const defaultOptions: ToastOptions = {
   position: 'top-right',
-  autoClose: 3000,
+  autoClose: 2000,
 };
 
 export function toastSuccess(message: string, options?: ToastOptions) {

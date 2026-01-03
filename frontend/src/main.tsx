@@ -14,11 +14,18 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Cart from './components/Cart';
 import ErrorPage from './components/ErrorPage';
-import ProductDetail from './components/ProductDetail.tsx';
+import ProductDetail from './components/ProductDetail';
+import CheckoutForm from './components/CheckoutForm';
+import Profile from './components/Profile';
+import Orders from './components/Orders';
+import AdminOrders from './components/admin/AdminOrders';
+import Messages from './components/admin/Messages';
+import ProtectedRoute from './components/ProtectedRoute';
 import { productsLoader } from './loaders/index.ts';
-import { contactAction, loginAction } from './actions/index.ts';
+import { contactAction, loginAction } from './actions/index';
 import { ToastContainer, Bounce } from 'react-toastify';
-import { CartProvider } from './store/cartContext.tsx';
+import { CartProvider } from './store/cartContext';
+import { AuthProvider } from './store/authContext';
 import 'react-toastify/dist/ReactToastify.css';
 
 const routeDefinitions = createRoutesFromElements(
@@ -30,6 +37,13 @@ const routeDefinitions = createRoutesFromElements(
     <Route path="/login" element={<Login />} action={loginAction} />
     <Route path="/cart" element={<Cart />} />
     <Route path="/product/:productId" element={<ProductDetail />} />
+    <Route element={<ProtectedRoute />}>
+      <Route path="/checkout" element={<CheckoutForm />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/orders" element={<Orders />} />
+      <Route path="/admin/orders" element={<AdminOrders />} />
+      <Route path="/admin/messages" element={<Messages />} />
+    </Route>
   </Route>,
 );
 
@@ -37,9 +51,11 @@ const router = createBrowserRouter(routeDefinitions);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </AuthProvider>
     <ToastContainer
       position="top-right"
       autoClose={3000}

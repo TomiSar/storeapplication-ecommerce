@@ -2,12 +2,15 @@ import { useEffect } from 'react';
 import { useNavigate, useNavigation, useActionData, Link, Form } from 'react-router-dom';
 import PageTitle from './PageTitle';
 import type { ActionResult } from '../actions/types';
+import { useAuth } from '../contexts/authContext';
 import { toastError, toastSuccess } from '../utils/toast';
 
 export default function Login() {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+  const { loginSuccess } = useAuth();
+  const from = sessionStorage.getItem('redirectPath') || '/home';
   const actionData = useActionData() as
     | ActionResult<{ message: string; user: unknown; jwtToken: string }, { message?: string }>
     | undefined;
@@ -16,11 +19,14 @@ export default function Login() {
     if (!actionData) return;
 
     if (actionData?.success) {
-      navigate('/home');
       toastSuccess('Login successful');
+      loginSuccess(actionData.jwtToken, actionData.user as Record<string, string>);
+      sessionStorage.removeItem('redirectPath');
+      navigate(from);
     } else {
       toastError(actionData.message ?? 'Login failed');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actionData, navigate]);
 
   const labelStyle = 'block text-lg font-semibold text-primary dark:text-light mb-2';
@@ -42,8 +48,8 @@ export default function Login() {
             <input
               className={textFieldStyle}
               id="username"
-              type="text"
               name="username"
+              type="text"
               placeholder="Your Username"
               autoComplete="username"
               required
@@ -57,10 +63,10 @@ export default function Login() {
             <input
               className={textFieldStyle}
               id="password"
-              type="password"
               name="password"
+              type="password"
               placeholder="Your Password"
-              autoComplete="current-password"
+              autoComplete="password"
               required
               minLength={4}
               maxLength={20}
@@ -70,6 +76,7 @@ export default function Login() {
           <div>
             <button
               className="w-full px-6 py-2 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter"
+              id="loginButton"
               type="submit"
               disabled={isSubmitting}
             >

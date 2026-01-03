@@ -5,6 +5,8 @@ import com.store.backend.dto.LoginResponseDto;
 import com.store.backend.dto.UserDto;
 import com.store.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,8 +25,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationManager authenticationManager;
-    //    private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
+    // private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
@@ -32,17 +35,18 @@ public class AuthController {
     public ResponseEntity<LoginResponseDto> apiLogin(@RequestBody LoginRequestDto loginRequestDto) {
 
         try {
-            Authentication authentication = authenticationManager.authenticate(new
-                    UsernamePasswordAuthenticationToken(loginRequestDto.username(),
-                    loginRequestDto.password()));
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto.username(),
+                            loginRequestDto.password()));
             var userDto = new UserDto();
             var loggedInUser = (User) authentication.getPrincipal();
             userDto.setName(loggedInUser.getUsername());
 
             // Generate JWT token after successful authentication
             String jwtToken = jwtUtil.generateJwtToken(authentication);
+            LoginResponseDto loginResponseDto = new LoginResponseDto(HttpStatus.OK.getReasonPhrase(), userDto, jwtToken);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new LoginResponseDto(HttpStatus.OK.getReasonPhrase(), userDto, jwtToken));
+                    .body(loginResponseDto);
         } catch (BadCredentialsException exception) {
             return buildErrorResponse(HttpStatus.UNAUTHORIZED,
                     "Invalid username or password");

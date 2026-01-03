@@ -2,6 +2,8 @@ package com.store.backend.util;
 
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +21,7 @@ import java.util.List;
 public class JwtUtil {
 
     private static final long JWT_EXPIRATION_TIME_MS = 1000L * 60L * 60L; // 1 hour
+    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
 
     @Value("${JWT_SECRET}")
     private String jwtSecret;

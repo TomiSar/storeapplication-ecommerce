@@ -32,9 +32,12 @@ export default function Cart() {
                 Clear Cart
               </button>
               {/* Proceed to Checkout Button */}
-              <button className="py-2 px-4 bg-primary dark:bg-light text-white dark:text-black text-xl font-semibold rounded-sm flex justify-center items-center hover:bg-dark dark:hover:bg-lighter transition">
+              <Link
+                className="py-2 px-4 bg-primary dark:bg-light text-white dark:text-black text-xl font-semibold rounded-sm flex justify-center items-center hover:bg-dark dark:hover:bg-lighter transition"
+                to="/checkout"
+              >
                 Proceed to Checkout
-              </button>
+              </Link>
             </div>
           </>
         ) : (

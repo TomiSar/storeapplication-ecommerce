@@ -1,22 +1,22 @@
+import { useRouteError, Link } from 'react-router-dom';
 import Header from './Header';
 import Footer from './footer/Footer';
 import PageTitle from './PageTitle';
 import errorImage from '../assets/util/error.png';
-import { Link } from 'react-router-dom';
-import { useRouteError } from 'react-router-dom';
 
 interface RouteError {
-  status: number;
+  status?: number;
   statusText?: string;
-  data: string;
+  data?: string;
 }
 
 export default function ErrorPage() {
   const routeError = useRouteError() as RouteError;
   let errorTitle = 'Oops! Something went wrong';
   let errorMessage = 'An unexpected error occurred. Please try again later.';
+
   if (routeError) {
-    errorTitle = routeError.status.toString() || errorTitle;
+    errorTitle = routeError.status ? routeError.status.toString() : errorTitle;
     errorMessage = routeError.data || routeError.statusText || errorMessage;
   }
   return (
