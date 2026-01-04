@@ -76,3 +76,46 @@ export async function loginAction({
     return mapApiError<LoginSuccess, LoginErrors>(error, 'Invalid username or password');
   }
 }
+
+/* ---------- REGISTER ---------- */
+interface RegisterSuccess {
+  message: string;
+}
+
+interface RegisterErrors {
+  name?: string;
+  email?: string;
+  mobileNumber?: string;
+  password?: string;
+  message?: string;
+}
+
+interface RegisterFormData {
+  name: string;
+  email: string;
+  mobileNumber: string;
+  password: string;
+}
+
+export async function registerAction({
+  request,
+}: ActionFunctionArgs): Promise<ActionResult<RegisterSuccess, RegisterErrors>> {
+  const data = await request.formData();
+
+  const registerData: RegisterFormData = {
+    name: String(data.get('name') ?? ''),
+    email: String(data.get('email') ?? ''),
+    mobileNumber: String(data.get('mobileNumber') ?? ''),
+    password: String(data.get('password') ?? ''),
+  };
+
+  try {
+    const response = await apiClient.post('/auth/register', registerData);
+    return {
+      success: true,
+      message: response.data.message,
+    };
+  } catch (error) {
+    return mapApiError<RegisterSuccess, RegisterErrors>(error, 'Registration failed');
+  }
+}

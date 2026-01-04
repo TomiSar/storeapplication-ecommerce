@@ -10,6 +10,7 @@ import {
 import './index.css';
 import Home from './components/Home';
 import Login from './components/Login';
+import Register from './components/Register.tsx';
 import About from './components/About';
 import Contact from './components/Contact';
 import Cart from './components/Cart';
@@ -22,7 +23,7 @@ import AdminOrders from './components/admin/AdminOrders';
 import Messages from './components/admin/Messages';
 import ProtectedRoute from './components/ProtectedRoute';
 import { productsLoader } from './loaders/index.ts';
-import { contactAction, loginAction } from './actions/index';
+import { contactAction, loginAction, registerAction } from './actions/index';
 import { ToastContainer, Bounce } from 'react-toastify';
 import { CartProvider } from './store/cartContext';
 import { AuthProvider } from './store/authContext';
@@ -35,6 +36,7 @@ const routeDefinitions = createRoutesFromElements(
     <Route path="/about" element={<About />} />
     <Route path="/contact" element={<Contact />} action={contactAction} />
     <Route path="/login" element={<Login />} action={loginAction} />
+    <Route path="/register" element={<Register />} action={registerAction} />
     <Route path="/cart" element={<Cart />} />
     <Route path="/product/:productId" element={<ProductDetail />} />
     <Route element={<ProtectedRoute />}>

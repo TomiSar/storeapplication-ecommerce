@@ -49,7 +49,7 @@ public class StoreApplicationSecurityConfig {
         var user1 = User.builder().username("testuser")
                 .password("$2a$12$q7/GfzfOQI0yO3AJRbSiK.IZ1tkBzr7vai11IdV7tu6IxwgNuk09a").roles("USER").build();
         var user2 = User.builder().username("admin")
-                .password("$2a$12$ocSAp.dtD8LU4IH0orD4wOX11YAZgt1Y3XWVHiduIwninjlrgnZJK").roles("USER", "ADMIN").build();
+                .password("$2a$12$vX2wHlEzErmXkUJGeyjoNuiMcDit4RfPbk.KKZYJSm754ib//i.xu").roles("USER", "ADMIN").build();
         return new InMemoryUserDetailsManager(user1, user2);
     }
 

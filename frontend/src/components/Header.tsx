@@ -8,6 +8,7 @@ import {
   faMoon,
   faAngleDown,
 } from '@fortawesome/free-solid-svg-icons';
+import { formatUsername } from '../utils/helpers';
 import { useCart } from '../contexts/cartContext';
 import { useAuth } from '../contexts/authContext';
 import { toast } from 'react-toastify';
@@ -26,7 +27,7 @@ export default function Header() {
   const [isAdminMenuOpen, setAdminMenuOpen] = useState(false);
   const toggleAdminMenu = () => setAdminMenuOpen((prev) => !prev);
   const toggleUserMenu = () => setUserMenuOpen((prev) => !prev);
-  const userMenuRef = useRef();
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -44,8 +45,8 @@ export default function Header() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     closeMenus();
-    const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         closeMenus();
       }
     };
@@ -60,7 +61,7 @@ export default function Header() {
     });
   }
 
-  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
     logout();
     toast.success('Logout successful');
@@ -126,7 +127,11 @@ export default function Header() {
               {isAuthenticated ? (
                 <div className="relative" ref={userMenuRef}>
                   <button className="relative text-primary" onClick={toggleUserMenu}>
-                    {user && <span className={navLinkClass}>Hello {String(user.name)}</span>}
+                    {user && (
+                      <span className={navLinkClass}>
+                        Hello {formatUsername(String(user.name))}
+                      </span>
+                    )}
                     <FontAwesomeIcon
                       icon={faAngleDown}
                       className="text-primary dark:text-light w-6 h-6"
@@ -171,7 +176,13 @@ export default function Header() {
                           </li>
                         )}
                         <li>
-                          <Link to="/home" onClick={handleLogout} className={dropdownLinkClass}>
+                          <Link
+                            className={dropdownLinkClass}
+                            to="/home"
+                            onClick={(event: React.MouseEvent<HTMLAnchorElement>) =>
+                              handleLogout(event)
+                            }
+                          >
                             Logout
                           </Link>
                         </li>

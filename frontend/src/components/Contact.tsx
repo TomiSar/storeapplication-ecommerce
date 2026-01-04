@@ -64,7 +64,7 @@ export default function Contact() {
       >
         {/* Name */}
         <div>
-          <label htmlFor="name" className={labelStyle}>
+          <label className={labelStyle} htmlFor="name">
             Name
           </label>
           <input
@@ -84,7 +84,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Email */}
           <div>
-            <label htmlFor="email" className={labelStyle}>
+            <label className={labelStyle} htmlFor="email">
               Email
             </label>
             <input
@@ -101,7 +101,7 @@ export default function Contact() {
           </div>
           {/* Mobile Number */}
           <div>
-            <label htmlFor="mobileNumber" className={labelStyle}>
+            <label className={labelStyle} htmlFor="mobileNumber">
               Mobile Number
             </label>
             <input
@@ -121,7 +121,7 @@ export default function Contact() {
         </div>
         {/* Message */}
         <div>
-          <label htmlFor="message" className={labelStyle}>
+          <label className={labelStyle} htmlFor="message">
             Message
           </label>
           <textarea
@@ -139,8 +139,8 @@ export default function Contact() {
         </div>
         <div className="text-center">
           <button
-            type="submit"
             className="px-6 py-2 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter"
+            type="submit"
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Submitting...' : 'Submit'}

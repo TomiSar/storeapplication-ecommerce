@@ -49,7 +49,11 @@
 
 ## API endpoints (Login)
 
-- http://localhost:8080/api/v1/auth/login (POST login)
+- http://localhost:8080/api/v1/auth/login (POST Login)
+
+## API endpoints (Register)
+
+- http://localhost:8080/api/v1/auth/register (POST Register User)
 
 ## API Spring boot actuator
 
@@ -76,3 +80,7 @@
 ## Front-end Development
 
 - [React](https://react.dev/)
+
+## Dev tool helpers
+
+- [Bcrypt Generator](https://bcrypt-generator.com/)
