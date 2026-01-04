@@ -119,3 +119,35 @@ export async function registerAction({
     return mapApiError<RegisterSuccess, RegisterErrors>(error, 'Registration failed');
   }
 }
+
+/* ---------- PROFILE ---------- */
+
+interface ProfileFormData {
+  name: string;
+  email: string;
+  mobileNumber: string;
+}
+
+export async function profileAction({ request }: ActionFunctionArgs) {
+  const data = await request.formData();
+
+  const profileData: ProfileFormData = {
+    name: String(data.get('name') ?? ''),
+    email: String(data.get('email') ?? ''),
+    mobileNumber: String(data.get('mobileNumber') ?? ''),
+    // street: data.get('street'),
+    // city: data.get('city'),
+    // state: data.get('state'),
+    // postalCode: data.get('postalCode'),
+    // country: data.get('country'),
+  };
+  try {
+    const response = await apiClient.put('/profile', profileData);
+    return {
+      success: true,
+      message: response.data.message,
+    };
+  } catch (error) {
+    return mapApiError<LoginSuccess, LoginErrors>(error, 'Failed to update profile');
+  }
+}
