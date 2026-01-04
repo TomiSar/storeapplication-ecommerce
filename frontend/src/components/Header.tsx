@@ -128,9 +128,7 @@ export default function Header() {
                 <div className="relative" ref={userMenuRef}>
                   <button className="relative text-primary" onClick={toggleUserMenu}>
                     {user && (
-                      <span className={navLinkClass}>
-                        Hello {formatUsername(String(user.name))}
-                      </span>
+                      <span className={navLinkClass}>{formatUsername(String(user.name))}</span>
                     )}
                     <FontAwesomeIcon
                       icon={faAngleDown}

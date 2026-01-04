@@ -10,7 +10,7 @@ import lombok.Data;
 public class RegisterRequestDto {
 
     @NotBlank(message = "Name is required")
-    @Size(min = 5, max = 30, message = "The length of the name should be between 5 and 30 characters")
+    @Size(min = 4, max = 30, message = "The length of the name should be between 4 and 30 characters")
     private String name;
 
     @NotBlank(message = "Email is required")
@@ -22,6 +22,6 @@ public class RegisterRequestDto {
     private String mobileNumber;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 6, max = 20, message = "Password length must be between 6 and 20 characters")
+    @Size(min = 8, max = 20, message = "Password length must be between 8 and 20 characters")
     private String password;
 }

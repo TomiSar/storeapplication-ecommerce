@@ -82,7 +82,7 @@ export default function Register() {
               type="text"
               placeholder="Your Name"
               required
-              minLength={5}
+              minLength={4}
               maxLength={30}
             />
             {actionData && !actionData.success && actionData.errors?.name && (
@@ -140,7 +140,7 @@ export default function Register() {
               placeholder="Your Password"
               autoComplete="password"
               required
-              minLength={6}
+              minLength={8}
               maxLength={20}
             />
             {actionData && !actionData.success && actionData.errors?.password && (
@@ -160,7 +160,7 @@ export default function Register() {
               placeholder="Confirm Your Password"
               autoComplete="confirm-password"
               required
-              minLength={6}
+              minLength={8}
               maxLength={20}
             />
             {passwordMismatchError && (

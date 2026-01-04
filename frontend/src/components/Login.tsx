@@ -68,7 +68,7 @@ export default function Login() {
               placeholder="Your Password"
               autoComplete="password"
               required
-              minLength={6}
+              minLength={8}
               maxLength={20}
             />
           </div>

@@ -74,7 +74,7 @@ export default function Contact() {
             type="text"
             placeholder="Your Name"
             required
-            minLength={5}
+            minLength={3}
             maxLength={30}
           />
           {actionData && !actionData.success && actionData.errors?.name && (
