@@ -76,7 +76,7 @@ export default function Header() {
 
   return (
     <header className="border-b border-gray-300 dark:border-gray-600 sticky top-0 z-20 bg-normalbg dark:bg-darkbg">
-      <div className="flex items-center justify-between mx-auto max-w-[1152px] px-6 py-4">
+      <div className="flex items-center justify-between mx-auto max-w-6xl px-6 py-4">
         <Link className={navLinkClass} to="/">
           <FontAwesomeIcon className="h-8 w-8" icon={faTags} />
           <span className="font-bold">Eazy Stickers</span>

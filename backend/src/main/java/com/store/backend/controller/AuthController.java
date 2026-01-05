@@ -19,7 +19,6 @@ import org.springframework.security.authentication.password.CompromisedPasswordC
 import org.springframework.security.authentication.password.CompromisedPasswordDecision;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 

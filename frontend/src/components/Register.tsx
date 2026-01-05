@@ -1,7 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import { useActionData, useNavigate, useNavigation, useSubmit, Form, Link } from 'react-router-dom';
 import PageTitle from './PageTitle';
-import type { ActionResult } from '../actions/types';
+import FieldError from './form/FieldError';
+import type { RegisterResult } from '../actions/types';
 import { toastError, toastSuccess } from '../utils/toast';
 
 export default function Register() {
@@ -11,18 +12,7 @@ export default function Register() {
   const submit = useSubmit();
   const isSubmitting = navigation.state === 'submitting';
   const [passwordMismatchError, setPasswordMismatchError] = useState<string>('');
-  const actionData = useActionData() as
-    | ActionResult<
-        { message: string },
-        {
-          name?: string;
-          email?: string;
-          mobileNumber?: string;
-          password?: string;
-          message?: string;
-        }
-      >
-    | undefined;
+  const actionData = useActionData() as RegisterResult | undefined;
 
   useEffect(() => {
     if (!actionData) return;
@@ -37,13 +27,12 @@ export default function Register() {
     }
   }, [actionData, navigate]);
 
-  /**  Validate Passwords Match **/
+  /**  Validate Password Match **/
   const validatePasswordsMatch = (formData: FormData): boolean => {
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
     if (password !== confirmPassword) {
       setPasswordMismatchError('Please ensure both passwords are the same.');
-      //   toastError('Passwords do not match');
       return false;
     }
     setPasswordMismatchError('');
@@ -70,7 +59,6 @@ export default function Register() {
       <div className="bg-white dark:bg-gray-700 shadow-md rounded-lg max-w-md w-full px-8 py-6">
         <PageTitle title="Register" />
         <Form className="space-y-6" method="POST" ref={formRef} onSubmit={handleSubmit}>
-          {/* Name */}
           <div>
             <label className={labelStyle} htmlFor="name">
               Name
@@ -85,12 +73,9 @@ export default function Register() {
               minLength={4}
               maxLength={30}
             />
-            {actionData && !actionData.success && actionData.errors?.name && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.name}</p>
-            )}
+            <FieldError actionData={actionData} field="name" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Email */}
             <div>
               <label className={labelStyle} htmlFor="email">
                 Email
@@ -103,11 +88,8 @@ export default function Register() {
                 placeholder="Your Email"
                 required
               />
-              {actionData && !actionData.success && actionData.errors?.email && (
-                <p className="text-red-500 text-sm mt-1">{actionData.errors.email}</p>
-              )}
+              <FieldError actionData={actionData} field="email" />
             </div>
-            {/* Mobile Number */}
             <div>
               <label className={labelStyle} htmlFor="mobileNumber">
                 Mobile Number
@@ -122,12 +104,9 @@ export default function Register() {
                 title="Mobile number must be between 8 and 10 digits"
                 placeholder="Your Mobile Number"
               />
-              {actionData && !actionData.success && actionData.errors?.mobileNumber && (
-                <p className="text-red-500 text-sm mt-1">{actionData.errors.mobileNumber}</p>
-              )}
+              <FieldError actionData={actionData} field="mobileNumber" />
             </div>
           </div>
-          {/* Password */}
           <div>
             <label className={labelStyle} htmlFor="password">
               Password
@@ -143,11 +122,8 @@ export default function Register() {
               minLength={8}
               maxLength={20}
             />
-            {actionData && !actionData.success && actionData.errors?.password && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.password}</p>
-            )}
+            <FieldError actionData={actionData} field="password" />
           </div>
-          {/* Confirm Password */}
           <div>
             <label className={labelStyle} htmlFor="confirmPassword">
               Confirm Password
@@ -167,7 +143,6 @@ export default function Register() {
               <p className="text-red-500 text-sm mt-1">{passwordMismatchError}</p>
             )}
           </div>
-          {/* Submit Button */}
           <button
             className="w-full px-6 py-2 text-white dark:text-black text-xl bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter rounded-md transition duration-200"
             type="submit"
@@ -176,7 +151,6 @@ export default function Register() {
             {isSubmitting ? 'Registering...' : 'Register'}
           </button>
         </Form>
-        {/* Login Link */}
         <p className="text-center text-gray-600 dark:text-gray-400 mt-4">
           Already have an account?{' '}
           <Link

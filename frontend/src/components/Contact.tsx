@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useActionData, useNavigation, useSubmit, Form } from 'react-router-dom';
 import PageTitle from './PageTitle';
-import type { ActionResult } from '../actions/types';
+import FieldError from './form/FieldError';
+import type { ContactResult } from '../actions/types';
 import { toastInfo, toastSuccess } from '../utils/toast';
 
 export default function Contact() {
@@ -9,17 +10,7 @@ export default function Contact() {
   const navigation = useNavigation();
   const submit = useSubmit();
   const isSubmitting = navigation.state === 'submitting';
-  const actionData = useActionData() as
-    | ActionResult<
-        void,
-        {
-          name?: string;
-          email?: string;
-          mobileNumber?: string;
-          message?: string;
-        }
-      >
-    | undefined;
+  const actionData = useActionData() as ContactResult | undefined;
 
   useEffect(() => {
     if (!actionData) return;
@@ -49,15 +40,14 @@ export default function Contact() {
     'w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-gray-600 placeholder-gray-400 dark:placeholder-gray-300';
 
   return (
-    <div className="max-w-[1152px] min-h-[852px] mx-auto px-6 py-8 font-primary bg-normalbg dark:bg-darkbg">
+    <div className="max-w-6xl min-h-[852px] mx-auto px-6 py-8 font-primary bg-normalbg dark:bg-darkbg">
       <PageTitle title="Contact Us" />
-      <p className="max-w-[768px] mx-auto mt-8 text-gray-600 dark:text-lighter mb-8 text-center">
+      <p className="max-w-3xl mx-auto mt-8 text-gray-600 dark:text-lighter mb-8 text-center">
         We’d love to hear from you! If you have any questions, feedback, or suggestions, please
         don’t hesitate to reach out.
       </p>
-      {/* Contact Form */}
       <Form
-        className="space-y-6 max-w-[768px] mx-auto"
+        className="space-y-6 max-w-3xl mx-auto"
         method="POST"
         ref={formRef}
         onSubmit={handleSubmit}
@@ -77,12 +67,9 @@ export default function Contact() {
             minLength={3}
             maxLength={30}
           />
-          {actionData && !actionData.success && actionData.errors?.name && (
-            <p className="text-red-500 text-sm mt-1">{actionData.errors.name}</p>
-          )}
+          <FieldError actionData={actionData} field="name" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Email */}
           <div>
             <label className={labelStyle} htmlFor="email">
               Email
@@ -95,11 +82,8 @@ export default function Contact() {
               placeholder="Your Email"
               required
             />
-            {actionData && !actionData.success && actionData.errors?.email && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.email}</p>
-            )}
+            <FieldError actionData={actionData} field="email" />
           </div>
-          {/* Mobile Number */}
           <div>
             <label className={labelStyle} htmlFor="mobileNumber">
               Mobile Number
@@ -114,12 +98,9 @@ export default function Contact() {
               title="Mobile number must be between 8 and 10 digits"
               placeholder="Your Mobile Number"
             />
-            {actionData && !actionData.success && actionData.errors?.mobileNumber && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.mobileNumber}</p>
-            )}
+            <FieldError actionData={actionData} field="mobileNumber" />
           </div>
         </div>
-        {/* Message */}
         <div>
           <label className={labelStyle} htmlFor="message">
             Message
@@ -133,9 +114,7 @@ export default function Contact() {
             minLength={5}
             maxLength={500}
           ></textarea>
-          {actionData && !actionData.success && actionData.errors?.message && (
-            <p className="text-red-500 text-sm mt-1">{actionData.errors.message}</p>
-          )}
+          <FieldError actionData={actionData} field="message" />
         </div>
         <div className="text-center">
           <button

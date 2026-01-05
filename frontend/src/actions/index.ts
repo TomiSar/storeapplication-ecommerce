@@ -1,26 +1,25 @@
 import apiClient from '../api/apiClient';
 import { type ActionFunctionArgs } from 'react-router-dom';
 import { mapApiError } from './errorUtils';
-import type { ActionResult } from './types';
+import type {
+  ContactErrors,
+  ContactFormData,
+  LoginErrors,
+  LoginFormData,
+  LoginSuccess,
+  ProfileErrors,
+  ProfileFormData,
+  RegisterSuccess,
+  RegisterErrors,
+  RegisterFormData,
+  ContactResult,
+  LoginResult,
+  RegisterResult,
+  ProfileResult,
+} from './types';
 
-/* ---------- CONTACT ---------- */
-export interface ContactErrors {
-  name?: string;
-  email?: string;
-  mobileNumber?: string;
-  message?: string;
-}
-
-interface ContactFormData {
-  name: string;
-  email: string;
-  mobileNumber: string;
-  message: string;
-}
-
-export async function contactAction({
-  request,
-}: ActionFunctionArgs): Promise<ActionResult<void, ContactErrors>> {
+/* ---------- CONTACT ACTION ---------- */
+export async function contactAction({ request }: ActionFunctionArgs): Promise<ContactResult> {
   const data = await request.formData();
 
   const contactData: ContactFormData = {
@@ -38,25 +37,8 @@ export async function contactAction({
   }
 }
 
-/* ---------- LOGIN ---------- */
-interface LoginSuccess {
-  message: string;
-  user: unknown;
-  jwtToken: string;
-}
-
-interface LoginErrors {
-  message?: string;
-}
-
-interface LoginFormData {
-  username: string;
-  password: string;
-}
-
-export async function loginAction({
-  request,
-}: ActionFunctionArgs): Promise<ActionResult<LoginSuccess, LoginErrors>> {
+/* ---------- LOGIN ACTION ---------- */
+export async function loginAction({ request }: ActionFunctionArgs): Promise<LoginResult> {
   const data = await request.formData();
 
   const loginData: LoginFormData = {
@@ -77,29 +59,8 @@ export async function loginAction({
   }
 }
 
-/* ---------- REGISTER ---------- */
-interface RegisterSuccess {
-  message: string;
-}
-
-interface RegisterErrors {
-  name?: string;
-  email?: string;
-  mobileNumber?: string;
-  password?: string;
-  message?: string;
-}
-
-interface RegisterFormData {
-  name: string;
-  email: string;
-  mobileNumber: string;
-  password: string;
-}
-
-export async function registerAction({
-  request,
-}: ActionFunctionArgs): Promise<ActionResult<RegisterSuccess, RegisterErrors>> {
+/* ---------- REGISTER ACTION ---------- */
+export async function registerAction({ request }: ActionFunctionArgs): Promise<RegisterResult> {
   const data = await request.formData();
 
   const registerData: RegisterFormData = {
@@ -120,34 +81,24 @@ export async function registerAction({
   }
 }
 
-/* ---------- PROFILE ---------- */
-
-interface ProfileFormData {
-  name: string;
-  email: string;
-  mobileNumber: string;
-}
-
-export async function profileAction({ request }: ActionFunctionArgs) {
+/* ---------- PROFILE ACTION ---------- */
+export async function profileAction({ request }: ActionFunctionArgs): Promise<ProfileResult> {
   const data = await request.formData();
 
   const profileData: ProfileFormData = {
     name: String(data.get('name') ?? ''),
     email: String(data.get('email') ?? ''),
     mobileNumber: String(data.get('mobileNumber') ?? ''),
-    // street: data.get('street'),
-    // city: data.get('city'),
-    // state: data.get('state'),
-    // postalCode: data.get('postalCode'),
-    // country: data.get('country'),
+    street: String(data.get('street') ?? ''),
+    city: String(data.get('city') ?? ''),
+    state: String(data.get('state') ?? ''),
+    postalCode: String(data.get('postalCode') ?? ''),
+    country: String(data.get('country') ?? ''),
   };
   try {
-    const response = await apiClient.put('/profile', profileData);
-    return {
-      success: true,
-      message: response.data.message,
-    };
+    await apiClient.put('/profile', profileData);
+    return { success: true };
   } catch (error) {
-    return mapApiError<LoginSuccess, LoginErrors>(error, 'Failed to update profile');
+    return mapApiError<void, ProfileErrors>(error, 'Failed to update profile');
   }
 }

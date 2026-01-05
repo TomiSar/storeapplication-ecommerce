@@ -26,7 +26,11 @@ export function mapApiError<TSuccess, TErrors extends object>(
 ): ActionResult<TSuccess, TErrors> {
   const err = error as ApiError<TErrors>;
 
-  // Validation errors (400)
+  type BackendErrorMessage = {
+    errorMessage?: string;
+  };
+
+  // Validation errors (400) backend field errors
   if (err.response?.status === 400 && err.response.data) {
     return {
       success: false,
@@ -34,12 +38,12 @@ export function mapApiError<TSuccess, TErrors extends object>(
     } as ActionResult<TSuccess, TErrors>;
   }
 
-  // Backend-provided error message
+  // Backend-provided error message (optional)
   const backendMessage =
-    typeof err.response?.data === 'object' &&
     err.response?.data &&
-    'errorMessage' in err.response.data
-      ? String((err.response.data as { errorMessage?: unknown }).errorMessage)
+    typeof err.response?.data === 'object' &&
+    'errorMessage' in (err.response.data as Record<string, unknown>)
+      ? String((err.response.data as BackendErrorMessage).errorMessage)
       : undefined;
 
   return {
