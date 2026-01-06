@@ -55,7 +55,7 @@ export default function ProductListings({ products }: ProductListingsProps) {
   }
 
   return (
-    <div className="max-w-[1152px] mx-auto">
+    <div className="max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-12">
         <SearchBox
           label="Search"

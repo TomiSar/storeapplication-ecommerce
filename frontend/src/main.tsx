@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
+import App from './App';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -10,7 +10,7 @@ import {
 import './index.css';
 import Home from './components/Home';
 import Login from './components/Login';
-import Register from './components/Register.tsx';
+import Register from './components/Register';
 import About from './components/About';
 import Contact from './components/Contact';
 import Cart from './components/Cart';
@@ -22,8 +22,8 @@ import Orders from './components/Orders';
 import AdminOrders from './components/admin/AdminOrders';
 import Messages from './components/admin/Messages';
 import ProtectedRoute from './components/ProtectedRoute';
-import { productsLoader } from './loaders/index.ts';
-import { contactAction, loginAction, registerAction } from './actions/index';
+import { productsLoader, profileLoader } from './loaders/index';
+import { contactAction, loginAction, profileAction, registerAction } from './actions/index';
 import { ToastContainer, Bounce } from 'react-toastify';
 import { CartProvider } from './store/cartContext';
 import { AuthProvider } from './store/authContext';
@@ -41,7 +41,13 @@ const routeDefinitions = createRoutesFromElements(
     <Route path="/product/:productId" element={<ProductDetail />} />
     <Route element={<ProtectedRoute />}>
       <Route path="/checkout" element={<CheckoutForm />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route
+        path="/profile"
+        element={<Profile />}
+        loader={profileLoader}
+        action={profileAction}
+        shouldRevalidate={({ actionResult }) => !actionResult?.success}
+      />
       <Route path="/orders" element={<Orders />} />
       <Route path="/admin/orders" element={<AdminOrders />} />
       <Route path="/admin/messages" element={<Messages />} />

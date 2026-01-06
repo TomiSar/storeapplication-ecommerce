@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
+import type { Profile } from '../types';
+
 // Common Action Result Type Response: Success or Errors
 export type ActionResult<TSuccess = void, TErrors = unknown> =
   | ({ success: true } & (TSuccess extends void ? {} : TSuccess))
@@ -63,5 +65,10 @@ export interface ProfileFormData extends BaseFormData {
 }
 
 // export interface ProfileErrors extends Partial<ProfileFormData> {} OLD TYPE
+export interface ProfileSuccess {
+  profileData: Profile;
+  emailUpdated?: boolean;
+  message?: string;
+}
 export type ProfileErrors = FieldErrorMap<ProfileFormData>;
-export type ProfileResult = ActionResult<void, ProfileErrors>;
+export type ProfileResult = ActionResult<ProfileSuccess, ProfileErrors>;

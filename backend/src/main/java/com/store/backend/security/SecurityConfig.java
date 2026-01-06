@@ -1,5 +1,6 @@
 package com.store.backend.security;
 
+import com.store.backend.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,18 +29,21 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class StoreApplicationSecurityConfig {
+public class SecurityConfig {
 
     private final List<String> publicPaths;
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((requests) -> {
                     publicPaths.forEach(path -> requests.requestMatchers(path).permitAll());
                     requests.anyRequest().authenticated();
-                }).formLogin(withDefaults()).httpBasic(withDefaults()).build();
+                })
+                .addFilterBefore(jwtAuthFilter, BasicAuthenticationFilter.class)
+                .formLogin(withDefaults()).httpBasic(withDefaults()).build();
     }
 
     @Bean
@@ -57,8 +63,9 @@ public class StoreApplicationSecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        final String allowedOrigin = "http://localhost:3000";
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of(allowedOrigin));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
         config.setAllowCredentials(true);

@@ -8,7 +8,7 @@ import {
   faMoon,
   faAngleDown,
 } from '@fortawesome/free-solid-svg-icons';
-import { formatUsername } from '../utils/helpers';
+import Avatar from 'react-avatar';
 import { useCart } from '../contexts/cartContext';
 import { useAuth } from '../contexts/authContext';
 import { toast } from 'react-toastify';
@@ -126,9 +126,20 @@ export default function Header() {
             <li>
               {isAuthenticated ? (
                 <div className="relative" ref={userMenuRef}>
-                  <button className="relative text-primary" onClick={toggleUserMenu}>
+                  <button
+                    className="flex items-center gap-2 px-2 py-1 rounded-full transition-colors duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none"
+                    onClick={toggleUserMenu}
+                  >
                     {user && (
-                      <span className={navLinkClass}>{formatUsername(String(user.name))}</span>
+                      <Avatar
+                        name={`${user.name}`}
+                        size="36"
+                        round
+                        maxInitials={2}
+                        textSizeRatio={2}
+                        color={theme === 'dark' ? '#1f2937' : '#ede9fe'} // bg
+                        fgColor={theme === 'dark' ? '#e5e7eb' : '#5b21b6'} // text
+                      />
                     )}
                     <FontAwesomeIcon
                       icon={faAngleDown}

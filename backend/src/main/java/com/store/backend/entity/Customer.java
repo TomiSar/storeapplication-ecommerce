@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
 @Getter
 @Setter
 @Entity
-@Table(name = "customers")
+@Table(name = "CUSTOMERS")
 public class Customer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,6 @@ public class Customer extends BaseEntity {
     @Column(name = "password_hash", nullable = false, length = 500)
     private String passwordHash;
 
-//    @OneToOne(mappedBy = "customer",cascade = CascadeType.ALL)
-//    private Address address;
-
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Address address;
 }

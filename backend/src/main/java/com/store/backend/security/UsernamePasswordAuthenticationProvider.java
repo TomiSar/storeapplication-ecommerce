@@ -17,7 +17,7 @@ import java.util.Collections;
 @Component
 @RequiredArgsConstructor
 // Custom AuthenticationProvider to authenticate users using email and password
-public class StoreApplicationPasswordAuthenticationProvider implements AuthenticationProvider {
+public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;

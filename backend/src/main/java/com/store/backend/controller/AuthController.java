@@ -78,7 +78,7 @@ public class AuthController {
                 registerRequestDto.getEmail(), registerRequestDto.getMobileNumber(), registerRequestDto.getName());
 
         if (existingCustomer.isPresent()) {
-            Map<String, String> registerErrors = getRegisterErrorMessage(registerRequestDto, existingCustomer);
+            Map<String, String> registerErrors = getRegisterErrorMessage(registerRequestDto, existingCustomer.get());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(registerErrors);
         }
 
@@ -90,16 +90,16 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful");
     }
 
-    private static Map<String, String> getRegisterErrorMessage(RegisterRequestDto registerRequestDto,
-            Optional<Customer> existingCustomer) {
+    private static Map<String, String> getRegisterErrorMessage(
+            RegisterRequestDto registerRequestDto, Customer existingCustomer) {
         Map<String, String> registerErrors = new HashMap<>();
-        if (existingCustomer.get().getName().equals(registerRequestDto.getName())) {
+        if (existingCustomer.getName().equals(registerRequestDto.getName())) {
             registerErrors.put("name", "This name is already in use. Please enter a different name.");
         }
-        if (existingCustomer.get().getEmail().equalsIgnoreCase(registerRequestDto.getEmail())) {
+        if (existingCustomer.getEmail().equalsIgnoreCase(registerRequestDto.getEmail())) {
             registerErrors.put("email", "This email is already in use. Please enter a different email address.");
         }
-        if (existingCustomer.get().getMobileNumber().equals(registerRequestDto.getMobileNumber())) {
+        if (existingCustomer.getMobileNumber().equals(registerRequestDto.getMobileNumber())) {
             registerErrors.put("mobileNumber",
                     "This mobile number is already in use. Please enter a different number.");
         }

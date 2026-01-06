@@ -3,7 +3,6 @@ package com.store.backend.util;
 import com.store.backend.entity.Customer;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -16,35 +15,21 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    private static final long JWT_EXPIRATION_TIME_MS = 1000L * 60L * 60L; // 1 hour
-
-    @Value("${JWT_SECRET}")
-    private String jwtSecret;
+    private final JwtProperties jwtProperties;
 
     public String generateJwtToken(Authentication authentication) {
-        Customer fetchedCustomer = (Customer) authentication.getPrincipal();
-
-        // Secret key
-        SecretKey secretKey = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
-
-        //// Authorities -> ["ADMIN", "USER"]
-        // List<String> authorities = fetchedCustomer.getAuthorities().stream()
-        // .map(GrantedAuthority::getAuthority)
-        // .toList();
-        //// Admin flag
-        // boolean isAdmin = authorities.contains("ADMIN") ||
-        //// authorities.contains("ROLE_ADMIN");
-
-        return Jwts.builder()
-                .issuer("Store Application")
-                .subject("JWT Token")
-                .claim("username", fetchedCustomer.getName())
-                .claim("email", fetchedCustomer.getEmail())
-                .claim("mobileNumber", fetchedCustomer.getMobileNumber())
-                // .claim("authorities", authorities)
-                // .claim("admin", isAdmin)
+        Customer activeCustomer = (Customer) authentication.getPrincipal();
+        SecretKey secretKey = getSecretKey();
+        return Jwts.builder().issuer("Store Application").subject("JWT Token")
+                .claim("username", activeCustomer.getName())
+                .claim("email", activeCustomer.getEmail())
+                .claim("mobileNumber", activeCustomer.getMobileNumber())
                 .issuedAt(new Date())
-                .expiration(new Date((System.currentTimeMillis()) + JWT_EXPIRATION_TIME_MS))
+                .expiration(new Date((System.currentTimeMillis()) + jwtProperties.getExpirationTimeMs()))
                 .signWith(secretKey).compact();
+    }
+
+    public SecretKey getSecretKey() {
+        return new SecretKeySpec(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     }
 }

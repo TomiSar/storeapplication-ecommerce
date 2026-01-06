@@ -1,9 +1,43 @@
-import { useNavigation, Form } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigation, useNavigate, useLoaderData, Form, useActionData } from 'react-router-dom';
 import PageTitle from './PageTitle';
+import FieldError from './form/FieldError';
+import type { Profile } from '../types';
+import { useAuth } from '../contexts/authContext';
+import type { ProfileResult } from '../actions/types';
+import { toastSuccess } from '../utils/toast';
 
 export default function Profile() {
+  const initialProfileData = useLoaderData() as Profile;
   const navigation = useNavigation();
+  const navigate = useNavigate();
+  const actionData = useActionData() as ProfileResult | undefined;
   const isSubmitting = navigation.state === 'submitting';
+  const { logout } = useAuth();
+
+  const serverProfile = actionData?.success ? actionData?.profileData : initialProfileData;
+  const [profileData, setProfileData] = useState<Profile>(serverProfile);
+
+  useEffect(() => {
+    if (!actionData?.success || !actionData.profileData) return;
+
+    if (actionData.profileData.emailUpdated) {
+      sessionStorage.setItem('skipRedirectPath', 'true');
+      logout();
+      toastSuccess('Logged out successfully! Login again with updated email');
+      navigate('/login');
+    } else {
+      toastSuccess('Your Profile details are saved successfully!');
+    }
+  }, [actionData, logout, navigate]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProfileData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const labelStyle = 'block text-lg font-semibold text-primary dark:text-light mb-2';
   const h2Style = 'block text-2xl font-semibold text-primary dark:text-light mb-2';
@@ -26,15 +60,13 @@ export default function Profile() {
             name="name"
             type="text"
             placeholder="Your Name"
-            // value={profileData.name}
-            // onChange={(e) => setProfileData((prev) => ({ ...prev, name: e.target.value }))}
+            value={profileData.name}
+            onChange={handleInputChange}
             required
             minLength={5}
             maxLength={30}
           />
-          {/* {actionData?.errors?.name && (
-            <p className="text-red-500 text-sm mt-1">{actionData.errors.name}</p>
-          )} */}
+          <FieldError actionData={actionData} field="name" />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -48,13 +80,12 @@ export default function Profile() {
               name="email"
               type="email"
               placeholder="Your Email"
-              // value={profileData.email}
-              // onChange={(e) => setProfileData((prev) => ({ ...prev, email: e.target.value }))}
+              value={profileData.email}
+              onChange={handleInputChange}
               required
             />
-            {/* {actionData?.errors?.email && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.email}</p>
-            )} */}
+
+            <FieldError actionData={actionData} field="email" />
           </div>
 
           <div>
@@ -66,21 +97,14 @@ export default function Profile() {
               id="mobileNumber"
               name="mobileNumber"
               type="tel"
-              required
-              pattern="^\d{10}$"
-              title="Mobile number must be exactly 10 digits"
-              // value={profileData.mobileNumber}
-              // onChange={(e) =>
-              //   setProfileData((prev) => ({
-              //     ...prev,
-              //     mobileNumber: e.target.value,
-              //   }))
-              // }
               placeholder="Your Mobile Number"
+              required
+              pattern="^\d{8,10}$"
+              title="Mobile number must be between 8 and 10 digits"
+              value={profileData.mobileNumber}
+              onChange={handleInputChange}
             />
-            {/* {actionData?.errors?.mobileNumber && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.mobileNumber}</p>
-            )} */}
+            <FieldError actionData={actionData} field="mobileNumber" />
           </div>
         </div>
 
@@ -95,20 +119,13 @@ export default function Profile() {
             name="street"
             type="text"
             placeholder="Street details"
-            // value={profileData.street}
-            // onChange={(e) =>
-            //   setProfileData((prev) => ({
-            //     ...prev,
-            //     street: e.target.value,
-            //   }))
-            // }
+            value={profileData.street}
+            onChange={handleInputChange}
             required
             minLength={5}
             maxLength={30}
           />
-          {/* {actionData?.errors?.street && (
-            <p className="text-red-500 text-sm mt-1">{actionData.errors.street}</p>
-          )} */}
+          <FieldError actionData={actionData} field="street" />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -122,20 +139,13 @@ export default function Profile() {
               name="city"
               type="text"
               placeholder="Your City"
-              // value={profileData.city}
-              // onChange={(e) =>
-              //   setProfileData((prev) => ({
-              //     ...prev,
-              //     city: e.target.value,
-              //   }))
-              // }
+              value={profileData.city}
+              onChange={handleInputChange}
               required
               minLength={3}
               maxLength={30}
             />
-            {/* {actionData?.errors?.city && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.city}</p>
-            )} */}
+            <FieldError actionData={actionData} field="city" />
           </div>
 
           <div>
@@ -147,21 +157,14 @@ export default function Profile() {
               id="state"
               name="state"
               type="text"
+              placeholder="Your State"
+              value={profileData.state}
+              onChange={handleInputChange}
               required
               minLength={2}
               maxLength={30}
-              placeholder="Your State"
-              // value={profileData.state}
-              // onChange={(e) =>
-              //   setProfileData((prev) => ({
-              //     ...prev,
-              //     state: e.target.value,
-              //   }))
-              // }
             />
-            {/* {actionData?.errors?.state && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.state}</p>
-            )} */}
+            <FieldError actionData={actionData} field="state" />
           </div>
         </div>
 
@@ -176,20 +179,13 @@ export default function Profile() {
               name="postalCode"
               type="text"
               placeholder="Your Postal Code"
-              // value={profileData.postalCode}
-              // onChange={(e) =>
-              //   setProfileData((prev) => ({
-              //     ...prev,
-              //     postalCode: e.target.value,
-              //   }))
-              // }
+              value={profileData.postalCode}
+              onChange={handleInputChange}
               required
               pattern="^\d{5}$"
               title="Postal code must be exactly 5 digits"
             />
-            {/* {actionData?.errors?.postalCode && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.postalCode}</p>
-            )} */}
+            <FieldError actionData={actionData} field="postalCode" />
           </div>
 
           <div>
@@ -201,24 +197,16 @@ export default function Profile() {
               id="country"
               name="country"
               type="text"
+              placeholder="Your Country"
+              value={profileData.country}
+              onChange={handleInputChange}
               required
               minLength={3}
               maxLength={30}
-              placeholder="Your Country"
-              // value={profileData.country}
-              // onChange={(e) =>
-              //   setProfileData((prev) => ({
-              //     ...prev,
-              //     country: e.target.value,
-              //   }))
-              // }
             />
-            {/* {actionData?.errors?.country && (
-              <p className="text-red-500 text-sm mt-1">{actionData.errors.country}</p>
-            )} */}
+            <FieldError actionData={actionData} field="country" />
           </div>
         </div>
-
         <div className="text-center">
           <button
             className="px-6 py-2 mt-8 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter"

@@ -15,12 +15,13 @@ export default function ProductDetail() {
   const product = state?.product;
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState<number>(1);
-  const zoomRef = useRef(null);
+  const zoomRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [backgroundPosition, setBackgroundPosition] = useState<string>('center');
   const { addToCart } = useCart();
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!zoomRef.current!) return;
     const { left, top, width, height } = zoomRef.current.getBoundingClientRect();
     const x = ((e.pageX - left) / width) * 100;
     const y = ((e.pageY - top) / height) * 100;

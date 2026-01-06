@@ -1,4 +1,4 @@
-import apiClient from '../api/apiClient';
+import { apiClient } from '../api/apiClient';
 import { type ActionFunctionArgs } from 'react-router-dom';
 import { mapApiError } from './errorUtils';
 import type {
@@ -7,7 +7,6 @@ import type {
   LoginErrors,
   LoginFormData,
   LoginSuccess,
-  ProfileErrors,
   ProfileFormData,
   RegisterSuccess,
   RegisterErrors,
@@ -16,6 +15,8 @@ import type {
   LoginResult,
   RegisterResult,
   ProfileResult,
+  ProfileSuccess,
+  ProfileErrors,
 } from './types';
 
 /* ---------- CONTACT ACTION ---------- */
@@ -96,9 +97,13 @@ export async function profileAction({ request }: ActionFunctionArgs): Promise<Pr
     country: String(data.get('country') ?? ''),
   };
   try {
-    await apiClient.put('/profile', profileData);
-    return { success: true };
+    const response = await apiClient.put('/profile', profileData);
+    return {
+      success: true,
+      profileData: response.data,
+      message: response.data.message,
+    };
   } catch (error) {
-    return mapApiError<void, ProfileErrors>(error, 'Failed to update profile');
+    return mapApiError<ProfileSuccess, ProfileErrors>(error, 'Failed to update profile');
   }
 }

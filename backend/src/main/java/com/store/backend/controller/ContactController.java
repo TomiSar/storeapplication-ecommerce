@@ -22,6 +22,7 @@ public class ContactController {
 
     private final ContactService contactService;
 
+    // Save contact request
     @PostMapping
     public ResponseEntity<String> saveContact(@Valid @RequestBody ContactRequestDto contactRequestDto) {
         contactService.saveContact(contactRequestDto);

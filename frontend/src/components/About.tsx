@@ -5,7 +5,7 @@ export default function About() {
   const pStyle = 'text-gray-600 dark:text-lighter';
 
   return (
-    <div className="max-w-[1152px] min-h-[852px] mx-auto px-6 py-8 font-primary">
+    <div className="max-w-6xl min-h-[852px] mx-auto px-6 py-8 font-primary">
       <PageTitle title="About Us" />
       {/* About Us Content */}
       <p className="leading-6 mb-8 text-gray-600 dark:text-lighter">
@@ -18,7 +18,7 @@ export default function About() {
       </p>
 
       {/* Why Choose Us Section */}
-      <h2 className="text-2xl leading-[32px] font-bold text-primary dark:text-light mb-6">
+      <h2 className="text-2xl leading-8 font-bold text-primary dark:text-light mb-6">
         Why Choose Us?
       </h2>
 
