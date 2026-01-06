@@ -1,8 +1,8 @@
 import { useRouteError, Link } from 'react-router-dom';
-import Header from './Header';
-import Footer from './footer/Footer';
-import PageTitle from './PageTitle';
 import errorImage from '../assets/util/error.png';
+import Footer from './footer/Footer';
+import Header from './Header';
+import PageTitle from './PageTitle';
 
 interface RouteError {
   status?: number;

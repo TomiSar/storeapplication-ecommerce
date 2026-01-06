@@ -1,7 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
+import type { Product } from '../types/products';
 import PageHeading from './PageHeading';
 import ProductListings from './ProductListings';
-import type { Product } from '../types/products';
 
 export default function Home() {
   const products: Product[] = useLoaderData();

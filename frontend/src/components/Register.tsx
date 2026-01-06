@@ -1,9 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
 import { useActionData, useNavigate, useNavigation, useSubmit, Form, Link } from 'react-router-dom';
-import PageTitle from './PageTitle';
-import FieldError from './form/FieldError';
 import type { RegisterResult } from '../actions/types';
 import { toastError, toastSuccess } from '../utils/toast';
+import FieldError from './form/FieldError';
+import PageTitle from './PageTitle';
 
 export default function Register() {
   const formRef = useRef<HTMLFormElement>(null);

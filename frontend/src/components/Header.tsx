@@ -1,6 +1,3 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faShoppingBasket,
   faTags,
@@ -8,10 +5,13 @@ import {
   faMoon,
   faAngleDown,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import Avatar from 'react-avatar';
-import { useCart } from '../contexts/cartContext';
-import { useAuth } from '../contexts/authContext';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAuth } from '../contexts/authContext';
+import { useCart } from '../contexts/cartContext';
 
 export default function Header() {
   const [theme, setTheme] = useState(() =>

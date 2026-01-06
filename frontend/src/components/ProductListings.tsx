@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
-import ProductCard from './ProductCard';
 import { SortOptions, type Product, type SortOption } from '../types';
-import SearchBox from './SearchBox';
 import Dropdown from './Dropdown';
+import ProductCard from './ProductCard';
+import SearchBox from './SearchBox';
 
 interface ProductListingsProps {
   products: Product[];

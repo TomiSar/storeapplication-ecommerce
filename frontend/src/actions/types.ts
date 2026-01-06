@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import type { Profile } from '../types';
 
 // Common Action Result Type Response: Success or Errors

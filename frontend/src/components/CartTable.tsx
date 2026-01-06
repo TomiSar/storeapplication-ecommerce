@@ -1,9 +1,8 @@
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/cartContext';
 import type { Product } from '../types/products';
-
 export default function CartTable() {
   const { cart, addToCart, removeFromCart } = useCart();
 

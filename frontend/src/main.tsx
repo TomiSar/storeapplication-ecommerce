@@ -1,32 +1,32 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from 'react-router-dom';
+import { ToastContainer, Bounce } from 'react-toastify';
+import { contactAction, loginAction, profileAction, registerAction } from './actions/index';
+import App from './App';
 import './index.css';
-import Home from './components/Home';
-import Login from './components/Login';
-import Register from './components/Register';
 import About from './components/About';
-import Contact from './components/Contact';
-import Cart from './components/Cart';
-import ErrorPage from './components/ErrorPage';
-import ProductDetail from './components/ProductDetail';
-import CheckoutForm from './components/CheckoutForm';
-import Profile from './components/Profile';
-import Orders from './components/Orders';
 import AdminOrders from './components/admin/AdminOrders';
 import Messages from './components/admin/Messages';
+import Cart from './components/Cart';
+import CheckoutForm from './components/CheckoutForm';
+import Contact from './components/Contact';
+import ErrorPage from './components/ErrorPage';
+import Home from './components/Home';
+import Login from './components/Login';
+import Orders from './components/Orders';
+import ProductDetail from './components/ProductDetail';
+import Profile from './components/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
+import Register from './components/Register';
 import { productsLoader, profileLoader } from './loaders/index';
-import { contactAction, loginAction, profileAction, registerAction } from './actions/index';
-import { ToastContainer, Bounce } from 'react-toastify';
-import { CartProvider } from './store/cartContext';
 import { AuthProvider } from './store/authContext';
+import { CartProvider } from './store/cartContext';
 import 'react-toastify/dist/ReactToastify.css';
 
 const routeDefinitions = createRoutesFromElements(

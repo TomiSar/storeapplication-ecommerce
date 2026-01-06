@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate, useNavigation, useActionData, Link, Form } from 'react-router-dom';
-import PageTitle from './PageTitle';
 import type { LoginResult } from '../actions/types';
 import { useAuth } from '../contexts/authContext';
 import { toastError, toastSuccess } from '../utils/toast';
+import PageTitle from './PageTitle';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ export default function Login() {
           </div>
         </Form>
         <p className="text-center text-gray-600 dark:text-gray-400 mt-4">
-          Don't have an account?{' '}
+          Don not have an account?{' '}
           <Link
             className="text-primary dark:text-light hover:text-dark dark:hover:text-primary transition duration-200"
             to="/register"

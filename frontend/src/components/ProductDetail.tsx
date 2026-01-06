@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import type { Product } from '../types';
 import { faArrowLeft, faShoppingCart, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRef, useState } from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../contexts/cartContext';
+import type { Product } from '../types';
 
 interface LocationState {
   product: Product;

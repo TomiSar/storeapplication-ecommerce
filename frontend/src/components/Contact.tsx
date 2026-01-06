@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useActionData, useNavigation, useSubmit, Form } from 'react-router-dom';
-import PageTitle from './PageTitle';
-import FieldError from './form/FieldError';
 import type { ContactResult } from '../actions/types';
 import { toastInfo, toastSuccess } from '../utils/toast';
+import FieldError from './form/FieldError';
+import PageTitle from './PageTitle';
 
 export default function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -11,7 +11,6 @@ export default function Contact() {
   const submit = useSubmit();
   const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData() as ContactResult | undefined;
-
   useEffect(() => {
     if (!actionData) return;
 

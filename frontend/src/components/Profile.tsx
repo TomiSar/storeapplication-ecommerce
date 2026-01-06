@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigation, useNavigate, useLoaderData, Form, useActionData } from 'react-router-dom';
-import PageTitle from './PageTitle';
-import FieldError from './form/FieldError';
-import type { Profile } from '../types';
-import { useAuth } from '../contexts/authContext';
 import type { ProfileResult } from '../actions/types';
+import { useAuth } from '../contexts/authContext';
+import type { Profile as ProfileData } from '../types';
 import { toastSuccess } from '../utils/toast';
+import FieldError from './form/FieldError';
+import PageTitle from './PageTitle';
 
 export default function Profile() {
-  const initialProfileData = useLoaderData() as Profile;
+  const initialProfileData = useLoaderData() as ProfileData;
   const navigation = useNavigation();
   const navigate = useNavigate();
   const actionData = useActionData() as ProfileResult | undefined;
@@ -16,7 +16,7 @@ export default function Profile() {
   const { logout } = useAuth();
 
   const serverProfile = actionData?.success ? actionData?.profileData : initialProfileData;
-  const [profileData, setProfileData] = useState<Profile>(serverProfile);
+  const [profileData, setProfileData] = useState<ProfileData>(serverProfile);
 
   useEffect(() => {
     if (!actionData?.success || !actionData.profileData) return;

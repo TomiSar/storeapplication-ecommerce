@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import Price from './Price';
-import type { Product } from '../types/products';
 import { useCart } from '../contexts/cartContext';
+import type { Product } from '../types/products';
+import Price from './Price';
 
 interface ProductCardProps {
   product: Product;

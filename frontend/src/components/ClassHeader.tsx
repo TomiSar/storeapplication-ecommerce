@@ -1,11 +1,11 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket, faTags } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function ClassHeader() {
   return (
     <header className="header">
       <div className="container">
-        <a className="link" href="">
+        <a className="link" href="_">
           <FontAwesomeIcon className="fa-icon" icon={faTags} />
           <span className="brand-title">Eazy Stickers</span>
         </a>

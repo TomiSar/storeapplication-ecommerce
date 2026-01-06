@@ -1,9 +1,9 @@
-import PageTitle from './PageTitle';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import emptyCartImage from '../assets/util/emptycart.png';
 import { useCart } from '../contexts/cartContext';
-import { useMemo } from 'react';
 import CartTable from './CartTable';
+import PageTitle from './PageTitle';
 
 export default function Cart() {
   const { cart, clearCart } = useCart();
