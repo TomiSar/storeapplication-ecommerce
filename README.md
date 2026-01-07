@@ -63,6 +63,11 @@
 
 - http://localhost:8080/swagger-ui.html
 
+## Run BackEnd unit tests with Jacoco --> (report: backend/target/site/jacoco/index.html)
+
+- mvn test
+- mvn jacoco:report
+
 ## Docs
 
 - [Vite](https://vite.dev/guide/)
