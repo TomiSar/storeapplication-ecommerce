@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> {
                     publicPaths.forEach(path -> requests.requestMatchers(path).permitAll());
                     requests.requestMatchers("/api/admin/**").hasRole("ADMIN");
-                    requests.anyRequest() .hasAuthority("USER");
+                    requests.anyRequest() .hasAnyRole("USER", "ADMIN");
                 })
                 .addFilterBefore(jwtAuthFilter, BasicAuthenticationFilter.class)
                 .formLogin(withDefaults()).httpBasic(withDefaults()).build();

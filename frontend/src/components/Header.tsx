@@ -12,6 +12,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/authContext';
 import { useCart } from '../contexts/cartContext';
+import { isAdminUser } from '../utils/helpers';
 
 export default function Header() {
   const [theme, setTheme] = useState(() =>
@@ -21,13 +22,12 @@ export default function Header() {
   const location = useLocation();
   const { totalQuantity } = useCart();
   const { isAuthenticated, logout, user } = useAuth();
-
-  const isAdmin = true; // Replace with actual admin check logic
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [isAdminMenuOpen, setAdminMenuOpen] = useState(false);
   const toggleAdminMenu = () => setAdminMenuOpen((prev) => !prev);
   const toggleUserMenu = () => setUserMenuOpen((prev) => !prev);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const isAdmin = isAdminUser((user?.roles as string) || '');
 
   useEffect(() => {
     if (theme === 'dark') {

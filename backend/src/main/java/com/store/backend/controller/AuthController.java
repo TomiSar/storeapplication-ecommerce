@@ -5,6 +5,7 @@ import com.store.backend.dto.LoginResponseDto;
 import com.store.backend.dto.RegisterRequestDto;
 import com.store.backend.dto.UserDto;
 import com.store.backend.entity.Customer;
+import com.store.backend.entity.Role;
 import com.store.backend.repository.CustomerRepository;
 import com.store.backend.util.JwtUtil;
 import jakarta.validation.Valid;
@@ -19,12 +20,15 @@ import org.springframework.security.authentication.password.CompromisedPasswordC
 import org.springframework.security.authentication.password.CompromisedPasswordDecision;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -46,7 +50,8 @@ public class AuthController {
             var userDto = new UserDto();
             var loggedInUser = (Customer) authentication.getPrincipal();
             BeanUtils.copyProperties(loggedInUser, userDto);
-            // userDto.setName(loggedInUser.getName());
+            userDto.setRoles(authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")));
 
             // Generate JWT token after successful authentication
             String jwtToken = jwtUtil.generateJwtToken(authentication);
@@ -86,6 +91,9 @@ public class AuthController {
         BeanUtils.copyProperties(registerRequestDto, customer);
         // Encode the password before saving
         customer.setPasswordHash(passwordEncoder.encode(registerRequestDto.getPassword()));
+        Role role = new Role();
+        role.setName("ROLE_USER");
+        customer.setRoles(Set.of(role));
         customerRepository.save(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful");
     }
