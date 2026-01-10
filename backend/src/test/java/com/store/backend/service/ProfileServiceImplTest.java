@@ -67,11 +67,12 @@ class ProfileServiceImplTest {
         assertEquals("Test User", result.getName());
         assertEquals("test@example.com", result.getEmail());
         assertEquals("1234567890", result.getMobileNumber());
-        assertEquals("Test Street", result.getStreet());
-        assertEquals("Test City", result.getCity());
-        assertEquals("Test State", result.getState());
-        assertEquals("12345", result.getPostalCode());
-        assertEquals("Test Country", result.getCountry());
+        assertNotNull(result.getAddress());
+        assertEquals("Test Street", result.getAddress().getStreet());
+        assertEquals("Test City", result.getAddress().getCity());
+        assertEquals("Test State", result.getAddress().getState());
+        assertEquals("12345", result.getAddress().getPostalCode());
+        assertEquals("Test Country", result.getAddress().getCountry());
 
         verify(customerRepository, times(1)).findByEmail("test@example.com");
     }
@@ -100,11 +101,12 @@ class ProfileServiceImplTest {
         assertEquals("Updated Name", result.getName());
         assertEquals("updated@example.com", result.getEmail());
         assertEquals("9876543210", result.getMobileNumber());
-        assertEquals("New Street", result.getStreet());
-        assertEquals("New City", result.getCity());
-        assertEquals("New State", result.getState());
-        assertEquals("54321", result.getPostalCode());
-        assertEquals("New Country", result.getCountry());
+        assertNotNull(result.getAddress());
+        assertEquals("New Street", result.getAddress().getStreet());
+        assertEquals("New City", result.getAddress().getCity());
+        assertEquals("New State", result.getAddress().getState());
+        assertEquals("54321", result.getAddress().getPostalCode());
+        assertEquals("New Country", result.getAddress().getCountry());
         assertTrue(result.isEmailUpdated());
         verify(customerRepository, times(1)).findByEmail("test@example.com");
         verify(customerRepository, times(1)).save(any(Customer.class));

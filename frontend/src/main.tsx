@@ -1,3 +1,5 @@
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
@@ -29,6 +31,8 @@ import { AuthProvider } from './store/authContext';
 import { CartProvider } from './store/cartContext';
 import 'react-toastify/dist/ReactToastify.css';
 
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
 const routeDefinitions = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
     <Route index element={<Home />} loader={productsLoader} />
@@ -59,20 +63,22 @@ const router = createBrowserRouter(routeDefinitions);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <CartProvider>
-        <RouterProvider router={router} />
-      </CartProvider>
-    </AuthProvider>
-    <ToastContainer
-      position="top-right"
-      autoClose={3000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      draggable
-      pauseOnHover
-      theme={localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'}
-      transition={Bounce}
-    />
+    <Elements stripe={stripePromise}>
+      <AuthProvider>
+        <CartProvider>
+          <RouterProvider router={router} />
+        </CartProvider>
+      </AuthProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        draggable
+        pauseOnHover
+        theme={localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'}
+        transition={Bounce}
+      />
+    </Elements>
   </StrictMode>,
 );

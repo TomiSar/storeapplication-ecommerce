@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigation, useNavigate, useLoaderData, Form, useActionData } from 'react-router-dom';
 import type { ProfileResult } from '../actions/types';
 import { useAuth } from '../contexts/authContext';
@@ -13,10 +13,36 @@ export default function Profile() {
   const navigate = useNavigate();
   const actionData = useActionData() as ProfileResult | undefined;
   const isSubmitting = navigation.state === 'submitting';
-  const { logout } = useAuth();
+  const { loginSuccess, logout } = useAuth();
+  const toastShown = useRef(false);
 
-  const serverProfile = actionData?.success ? actionData?.profileData : initialProfileData;
+  const defaultAddress = useMemo(
+    () => ({
+      street: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      country: '',
+    }),
+    [],
+  );
+  const serverProfile = useMemo(() => {
+    return actionData?.success
+      ? { ...actionData.profileData, address: actionData.profileData.address || defaultAddress }
+      : { ...initialProfileData, address: initialProfileData.address || defaultAddress };
+  }, [actionData, defaultAddress, initialProfileData]);
+
   const [profileData, setProfileData] = useState<ProfileData>(serverProfile);
+
+  const updatedProfileData = useMemo(() => {
+    if (actionData?.success && actionData.profileData) {
+      return {
+        ...serverProfile,
+        ...actionData.profileData,
+      };
+    }
+    return serverProfile;
+  }, [actionData, serverProfile]);
 
   useEffect(() => {
     if (!actionData?.success || !actionData.profileData) return;
@@ -26,16 +52,30 @@ export default function Profile() {
       logout();
       toastSuccess('Logged out successfully! Login again with updated email');
       navigate('/login');
-    } else {
+    } else if (!toastShown.current) {
       toastSuccess('Your Profile details are saved successfully!');
+      toastShown.current = true;
+
+      // Prepare the updated user object
+      const updatedUser = {
+        ...profileData, // previous
+        ...actionData.profileData, // updated fields
+      };
+
+      // Update in context
+      loginSuccess(localStorage.getItem('jwtToken') || '', updatedUser);
     }
-  }, [actionData, logout, navigate]);
+  }, [actionData, logout, navigate, loginSuccess, profileData]);
+
+  useEffect(() => {
+    setProfileData(updatedProfileData);
+  }, [updatedProfileData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileData((prev) => ({
       ...prev,
-      [name]: value,
+      address: { ...prev.address, [name]: value },
     }));
   };
 
@@ -119,7 +159,7 @@ export default function Profile() {
             name="street"
             type="text"
             placeholder="Street details"
-            value={profileData.street}
+            value={profileData.address.street}
             onChange={handleInputChange}
             required
             minLength={5}
@@ -139,7 +179,7 @@ export default function Profile() {
               name="city"
               type="text"
               placeholder="Your City"
-              value={profileData.city}
+              value={profileData.address.city}
               onChange={handleInputChange}
               required
               minLength={3}
@@ -158,7 +198,7 @@ export default function Profile() {
               name="state"
               type="text"
               placeholder="Your State"
-              value={profileData.state}
+              value={profileData.address.state}
               onChange={handleInputChange}
               required
               minLength={2}
@@ -179,7 +219,7 @@ export default function Profile() {
               name="postalCode"
               type="text"
               placeholder="Your Postal Code"
-              value={profileData.postalCode}
+              value={profileData.address.postalCode}
               onChange={handleInputChange}
               required
               pattern="^\d{5}$"
@@ -198,11 +238,11 @@ export default function Profile() {
               name="country"
               type="text"
               placeholder="Your Country"
-              value={profileData.country}
+              value={profileData.address.country}
               onChange={handleInputChange}
               required
-              minLength={3}
-              maxLength={30}
+              minLength={2}
+              maxLength={2}
             />
             <FieldError actionData={actionData} field="country" />
           </div>

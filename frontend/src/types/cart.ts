@@ -10,4 +10,5 @@ export interface CartContextType {
   removeFromCart: (itemId: number) => void;
   clearCart: () => void;
   totalQuantity: number;
+  totalPrice: number;
 }

@@ -18,6 +18,7 @@ build
 # misc
 backend/logs
 backend/.env
+frontend/.env
 .DS_Store
 .env.local
 .env.development.local

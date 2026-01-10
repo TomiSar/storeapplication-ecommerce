@@ -9,7 +9,7 @@
 - TypeScript
 - Postman
 
-## **Create env.properties file in backend folder Add personal env.properties values in file**
+## **Create env.properties file in backend folder Add personal env.properties in file**
 
 - **DATABASE_URL=jdbc:mysql://localhost:3306**
 - **DATABASE={DATABASE}**
@@ -20,6 +20,11 @@
 ## **Import env.properties in application.properties**
 
 - **_spring.config.import=file:env.properties_**
+
+## **Create .env file in frontend folder Add personal .env properties in file**
+
+- VITE_API_BASEURL="http://localhost:8080/api/v1"
+- **VITE_STRIPE_PUBLISHABLE_KEY={STRIPE_PUBLISHABLE_KEY}**
 
 ## Start backend (localhost:8080) backend folder
 
@@ -85,6 +90,7 @@
 ## Front-end Development
 
 - [React](https://react.dev/)
+- [Stripe](https://docs.stripe.com/)
 
 ## Dev tool helpers
 

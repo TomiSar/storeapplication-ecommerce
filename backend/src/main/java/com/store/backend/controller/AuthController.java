@@ -1,9 +1,6 @@
 package com.store.backend.controller;
 
-import com.store.backend.dto.LoginRequestDto;
-import com.store.backend.dto.LoginResponseDto;
-import com.store.backend.dto.RegisterRequestDto;
-import com.store.backend.dto.UserDto;
+import com.store.backend.dto.*;
 import com.store.backend.entity.Customer;
 import com.store.backend.entity.Role;
 import com.store.backend.repository.CustomerRepository;
@@ -52,6 +49,12 @@ public class AuthController {
             BeanUtils.copyProperties(loggedInUser, userDto);
             userDto.setRoles(authentication.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")));
+
+            if (loggedInUser.getAddress() != null) {
+                AddressDto addressDto = new AddressDto();
+                BeanUtils.copyProperties(loggedInUser.getAddress(), addressDto);
+                userDto.setAddress(addressDto);
+            }
 
             // Generate JWT token after successful authentication
             String jwtToken = jwtUtil.generateJwtToken(authentication);
