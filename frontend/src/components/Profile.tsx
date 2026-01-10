@@ -71,7 +71,15 @@ export default function Profile() {
     setProfileData(updatedProfileData);
   }, [updatedProfileData]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProfileData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleInputAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileData((prev) => ({
       ...prev,
@@ -101,7 +109,7 @@ export default function Profile() {
             type="text"
             placeholder="Your Name"
             value={profileData.name}
-            onChange={handleInputChange}
+            onChange={handleInputProfileChange}
             required
             minLength={5}
             maxLength={30}
@@ -121,7 +129,7 @@ export default function Profile() {
               type="email"
               placeholder="Your Email"
               value={profileData.email}
-              onChange={handleInputChange}
+              onChange={handleInputProfileChange}
               required
             />
 
@@ -142,7 +150,7 @@ export default function Profile() {
               pattern="^\d{8,10}$"
               title="Mobile number must be between 8 and 10 digits"
               value={profileData.mobileNumber}
-              onChange={handleInputChange}
+              onChange={handleInputProfileChange}
             />
             <FieldError actionData={actionData} field="mobileNumber" />
           </div>
@@ -160,7 +168,7 @@ export default function Profile() {
             type="text"
             placeholder="Street details"
             value={profileData.address.street}
-            onChange={handleInputChange}
+            onChange={handleInputAddressChange}
             required
             minLength={5}
             maxLength={30}
@@ -180,7 +188,7 @@ export default function Profile() {
               type="text"
               placeholder="Your City"
               value={profileData.address.city}
-              onChange={handleInputChange}
+              onChange={handleInputAddressChange}
               required
               minLength={3}
               maxLength={30}
@@ -199,7 +207,7 @@ export default function Profile() {
               type="text"
               placeholder="Your State"
               value={profileData.address.state}
-              onChange={handleInputChange}
+              onChange={handleInputAddressChange}
               required
               minLength={2}
               maxLength={30}
@@ -220,7 +228,7 @@ export default function Profile() {
               type="text"
               placeholder="Your Postal Code"
               value={profileData.address.postalCode}
-              onChange={handleInputChange}
+              onChange={handleInputAddressChange}
               required
               pattern="^\d{5}$"
               title="Postal code must be exactly 5 digits"
@@ -239,7 +247,7 @@ export default function Profile() {
               type="text"
               placeholder="Your Country"
               value={profileData.address.country}
-              onChange={handleInputChange}
+              onChange={handleInputAddressChange}
               required
               minLength={2}
               maxLength={2}

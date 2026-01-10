@@ -16,6 +16,8 @@
 - **USER={USER}**
 - **PASSWORD={PASSWORD}**
 - **JWT_SECRET={JWT_SECRET}**
+- **STRIPE_API_KEY={STRIPE_API_KEY}**
+- **JWT_EXPIRATION_MS={JWT_EXPIRATION_MS}**
 
 ## **Import env.properties in application.properties**
 
