@@ -50,6 +50,10 @@
 - http://localhost:8080/api/v1/contacts (POST add Contacts)
 - http://localhost:8080/api/v1/contacts (GET all Contacts)
 
+## API endpoints (Orders)
+
+- http://localhost:8080/api/v1/orders (POST add order)
+
 ## API endpoints (Products)
 
 - http://localhost:8080/api/v1/products (GET all Products)

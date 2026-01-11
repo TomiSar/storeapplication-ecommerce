@@ -2,6 +2,7 @@ package com.store.backend.filter;
 
 import com.store.backend.util.JwtUtil;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,11 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.lang.NonNull;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -50,6 +49,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
                         AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (ExpiredJwtException expiredJwtException) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("JWT token has expired");
+                return;
             } catch (Exception exception) {
                 throw new BadCredentialsException("Invalid JWT token: ", exception);
             }

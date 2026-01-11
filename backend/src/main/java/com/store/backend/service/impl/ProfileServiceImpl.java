@@ -52,7 +52,7 @@ public class ProfileServiceImpl implements ProfileService {
         return profileResponseDto;
     }
 
-    private Customer getAuthenticatedCustomer() {
+    public Customer getAuthenticatedCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         log.debug("getAuthenticatedCustomer email: {}", email);

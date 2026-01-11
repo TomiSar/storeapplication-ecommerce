@@ -23,9 +23,8 @@ import java.util.Set;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
-                                                                  WebRequest webRequest) {
-        log.error("An exception occurred due to : {}", exception.getMessage());
+    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception, WebRequest webRequest) {
+        log.error("Exception : {}", exception.getMessage());
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 webRequest.getDescription(false), HttpStatus.INTERNAL_SERVER_ERROR,
                 exception.getMessage(), LocalDateTime.now());
@@ -35,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(
             MethodArgumentNotValidException exception) {
-        log.error("An exception occurred due to : {}", exception.getMessage());
+        log.error("MethodArgumentNotValidException : {}", exception.getMessage());
         Map<String, String> errors = new HashMap<>();
         List<FieldError> fieldErrorList = exception.getBindingResult().getFieldErrors();
         fieldErrorList.forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -45,12 +44,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, String>> handleConstraintViolationException(
             ConstraintViolationException exception) {
-        log.error("An exception occurred due to : {}", exception.getMessage());
+        log.error("ConstraintViolationException : {}", exception.getMessage());
         Map<String, String> errors = new HashMap<>();
         Set<ConstraintViolation<?>> constraintViolationSet = exception.getConstraintViolations();
         constraintViolationSet.forEach(constraintViolation ->
                 errors.put(constraintViolation.getPropertyPath().toString(),
                         constraintViolation.getMessage()));
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(
+            ResourceNotFoundException exception, WebRequest webRequest) {
+        log.error("ResourceNotFoundException : {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false), HttpStatus.NOT_FOUND,
+                exception.getMessage(), LocalDateTime.now());
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 }
