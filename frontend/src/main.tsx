@@ -22,6 +22,7 @@ import ErrorPage from './components/ErrorPage';
 import Home from './components/Home';
 import Login from './components/Login';
 import Orders from './components/Orders';
+import OrderSuccess from './components/OrderSuccess';
 import ProductDetail from './components/ProductDetail';
 import Profile from './components/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -45,6 +46,7 @@ const routeDefinitions = createRoutesFromElements(
     <Route path="/product/:productId" element={<ProductDetail />} />
     <Route element={<ProtectedRoute />}>
       <Route path="/checkout" element={<CheckoutForm />} />
+      <Route path="/order-success" element={<OrderSuccess />} />
       <Route
         path="/profile"
         element={<Profile />}

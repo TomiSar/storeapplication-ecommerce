@@ -93,6 +93,7 @@
 
 - [React](https://react.dev/)
 - [Stripe](https://docs.stripe.com/)
+- [Stripe Testing](https://docs.stripe.com/testing)
 
 ## Dev tool helpers
 
