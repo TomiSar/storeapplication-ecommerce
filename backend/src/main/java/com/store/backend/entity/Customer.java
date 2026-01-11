@@ -15,6 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "CUSTOMERS")
 public class Customer extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id", nullable = false)
@@ -46,4 +47,5 @@ public class Customer extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id", nullable = false)
     private Set<Role> roles = new LinkedHashSet<>();
+    
 }

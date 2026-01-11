@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "ADDRESS")
 public class Address extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id", nullable = false)
@@ -48,4 +49,5 @@ public class Address extends BaseEntity {
     @NotNull
     @Column(name = "country", nullable = false, length = 100)
     private String country;
+    
 }
