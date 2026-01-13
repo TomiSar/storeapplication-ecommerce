@@ -53,6 +53,8 @@
 ## API endpoints (Orders)
 
 - http://localhost:8080/api/v1/orders (POST add order)
+- http://localhost:8080/api/v1/orders (GET all orders)
+- http://localhost:8080/api/v1/admin/orders (GET all orders)
 
 ## API endpoints (Products)
 
@@ -98,6 +100,7 @@
 - [React](https://react.dev/)
 - [Stripe](https://docs.stripe.com/)
 - [Stripe Testing](https://docs.stripe.com/testing)
+- [Day Js](https://day.js.org/docs/en/installation/installation)
 
 ## Dev tool helpers
 

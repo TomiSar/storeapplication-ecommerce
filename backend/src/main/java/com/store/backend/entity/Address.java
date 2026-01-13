@@ -49,5 +49,5 @@ public class Address extends BaseEntity {
     @NotNull
     @Column(name = "country", nullable = false, length = 100)
     private String country;
-    
+
 }

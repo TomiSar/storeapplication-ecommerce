@@ -1,9 +1,10 @@
 package com.store.backend.util;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "jwt")
 public class JwtProperties {
 
-    //    @NotBlank
+    // @NotBlank
     private String secret;
 
-    //    @Positive
+    // @Positive
     private long expirationTimeMs;
 }

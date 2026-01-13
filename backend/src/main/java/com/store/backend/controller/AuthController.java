@@ -73,7 +73,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
         // Check is the password is weak or compromised
         CompromisedPasswordDecision decision = compromisedPasswordChecker.check(registerRequestDto.getPassword());
         if (decision.isCompromised()) {

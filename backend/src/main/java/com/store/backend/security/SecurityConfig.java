@@ -1,7 +1,10 @@
 package com.store.backend.security;
 
-import com.store.backend.filter.JwtAuthFilter;
-import lombok.RequiredArgsConstructor;
+import static org.springframework.security.config.Customizer.withDefaults;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,10 +24,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collections;
-import java.util.List;
+import com.store.backend.filter.JwtAuthFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -36,13 +38,15 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrfConfig -> csrfConfig.
-                        csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
+        return http.csrf(csrfConfig -> csrfConfig.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
                 .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((requests) -> {
                     publicPaths.forEach(path -> requests.requestMatchers(path).permitAll());
                     requests.requestMatchers("/api/admin/**").hasRole("ADMIN");
+                    requests.requestMatchers("/backend/actuator/**").hasRole("OPS_ENG");
+                    requests.requestMatchers("/swagger-ui/index.html", "/swagger-ui/**", "/v3/api-docs/**")
+                            .hasAnyRole("DEV_ENG", "QA_ENG", "OPS_ENG");
                     requests.anyRequest().hasAnyRole("USER", "ADMIN");
                 })
                 .addFilterBefore(jwtAuthFilter, BasicAuthenticationFilter.class)

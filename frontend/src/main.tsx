@@ -27,7 +27,13 @@ import ProductDetail from './components/ProductDetail';
 import Profile from './components/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import Register from './components/Register';
-import { productsLoader, profileLoader } from './loaders/index';
+import {
+  adminOrderLoader,
+  messagesLoader,
+  orderLoader,
+  productsLoader,
+  profileLoader,
+} from './loaders/index';
 import { AuthProvider } from './store/authContext';
 import { CartProvider } from './store/cartContext';
 import 'react-toastify/dist/ReactToastify.css';
@@ -54,9 +60,9 @@ const routeDefinitions = createRoutesFromElements(
         action={profileAction}
         shouldRevalidate={({ actionResult }) => !actionResult?.success}
       />
-      <Route path="/orders" element={<Orders />} />
-      <Route path="/admin/orders" element={<AdminOrders />} />
-      <Route path="/admin/messages" element={<Messages />} />
+      <Route path="/orders" element={<Orders />} loader={orderLoader} />
+      <Route path="/admin/orders" element={<AdminOrders />} loader={adminOrderLoader} />
+      <Route path="/admin/messages" element={<Messages />} loader={messagesLoader} />
     </Route>
   </Route>,
 );

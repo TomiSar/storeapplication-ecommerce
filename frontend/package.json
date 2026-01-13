@@ -28,6 +28,7 @@
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
+    "dayjs": "^1.11.19",
     "js-cookie": "^3.0.5",
     "prop-types": "^15.8.1",
     "react": "^19.2.0",

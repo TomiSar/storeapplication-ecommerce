@@ -1,5 +1,7 @@
+// import { useRevalidator } from 'react-router-dom';
 import { apiClient } from '../api/apiClient';
-import type { Product, Profile } from '../types';
+import type { AdminMessage, Order, Product, Profile } from '../types';
+// import { toastError, toastSuccess } from '../utils/toast';
 
 interface ApiError {
   response?: {
@@ -37,6 +39,51 @@ export const profileLoader = async () => {
       err.response?.data?.errorMessage ||
         err.message ||
         'Failed to fetch profile. Please try again.',
+      { status: err.status || 500 },
+    );
+  }
+};
+
+export const orderLoader = async () => {
+  try {
+    const response = await apiClient.get<Order[]>('/orders');
+    return response.data;
+  } catch (error) {
+    const err = error as ApiError;
+    throw new Response(
+      err.response?.data?.errorMessage ||
+        err.message ||
+        'Failed to fetch orders. Please try again.',
+      { status: err.status || 500 },
+    );
+  }
+};
+
+export const adminOrderLoader = async () => {
+  try {
+    const response = await apiClient.get<Order[]>('/admin/orders');
+    return response.data;
+  } catch (error) {
+    const err = error as ApiError;
+    throw new Response(
+      err.response?.data?.errorMessage ||
+        err.message ||
+        'Failed to fetch orders. Please try again.',
+      { status: err.status || 500 },
+    );
+  }
+};
+
+export const messagesLoader = async () => {
+  try {
+    const response = await apiClient.get<AdminMessage>('/admin/messages');
+    return response.data;
+  } catch (error) {
+    const err = error as ApiError;
+    throw new Response(
+      err.response?.data?.errorMessage ||
+        err.message ||
+        'Failed to fetch orders. Please try again.',
       { status: err.status || 500 },
     );
   }

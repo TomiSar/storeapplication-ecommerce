@@ -1,5 +1,11 @@
 package com.store.backend.service.impl;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
 import com.store.backend.dto.AddressDto;
 import com.store.backend.dto.ProfileRequestDto;
 import com.store.backend.dto.ProfileResponseDto;
@@ -7,13 +13,9 @@ import com.store.backend.entity.Address;
 import com.store.backend.entity.Customer;
 import com.store.backend.repository.CustomerRepository;
 import com.store.backend.service.ProfileService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -56,10 +58,11 @@ public class ProfileServiceImpl implements ProfileService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         log.debug("getAuthenticatedCustomer email: {}", email);
-        return customerRepository.findByEmail(email).
-                orElseThrow(() -> new UsernameNotFoundException("Profile not found with email: " + email));
+        return customerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Profile not found with email: " + email));
     }
 
+    /** Map Customer entity to ProfileResponseDto **/
     private ProfileResponseDto mapCustomerToProfileResponseDto(Customer customer) {
         ProfileResponseDto profileResponseDto = new ProfileResponseDto();
         BeanUtils.copyProperties(customer, profileResponseDto);

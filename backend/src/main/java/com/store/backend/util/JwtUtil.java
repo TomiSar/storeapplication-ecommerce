@@ -1,17 +1,20 @@
 package com.store.backend.util;
 
-import com.store.backend.entity.Customer;
-import io.jsonwebtoken.Jwts;
-import lombok.RequiredArgsConstructor;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.stream.Collectors;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.stream.Collectors;
+import com.store.backend.entity.Customer;
+
+import io.jsonwebtoken.Jwts;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
