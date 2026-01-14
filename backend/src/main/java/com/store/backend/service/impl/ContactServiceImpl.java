@@ -27,15 +27,15 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public List<ContactResponseDto> getAllOpenMessages() {
-        List<Contact> contacts = contactRepository.findByStatus(ApplicationConstants.OPEN_MESSAGE);
-        return contacts.stream().map(this::mapToContactResponseDTO).collect(Collectors.toList());
-    }
-
-    @Override
     public List<ContactRequestDto> getContacts() {
         return contactRepository.findAll()
                 .stream().map(this::transformToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ContactResponseDto> getAllOpenMessages() {
+        List<Contact> contacts = contactRepository.findByStatus(ApplicationConstants.OPEN_MESSAGE);
+        return contacts.stream().map(this::mapToContactResponseDTO).collect(Collectors.toList());
     }
 
     @Override

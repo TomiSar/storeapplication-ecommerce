@@ -79,22 +79,20 @@ public class OrderServiceImpl implements OrderService {
     /** Map Order entity to OrderResponseDto **/
     private OrderResponseDto mapToOrderResponseDTO(Order order) {
         return new OrderResponseDto(
-            order.getOrderId(),
-            order.getOrderStatus(),
-            order.getTotalPrice(),
-            order.getCreatedAt().toString(),
-            order.getOrderItems().stream().map(this::mapToOrderItemResponseDTO).toList()
-        );
+                order.getOrderId(),
+                order.getOrderStatus(),
+                order.getTotalPrice(),
+                order.getCreatedAt().toString(),
+                order.getOrderItems().stream().map(this::mapToOrderItemResponseDTO).toList());
     }
 
     /** Map OrderItem entity to OrderItemResponseDto **/
     private OrderItemResponseDto mapToOrderItemResponseDTO(OrderItem orderItem) {
         return new OrderItemResponseDto(
-            orderItem.getProduct().getName(),
-            orderItem.getQuantity(),
-            orderItem.getPrice(),
-            orderItem.getProduct().getImageUrl()
-        );
+                orderItem.getProduct().getName(),
+                orderItem.getQuantity(),
+                orderItem.getPrice(),
+                orderItem.getProduct().getImageUrl());
     }
 
 }
