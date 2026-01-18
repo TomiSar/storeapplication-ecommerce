@@ -48,6 +48,7 @@ export default function Login() {
               placeholder="Your Username"
               autoComplete="username"
               required
+              data-testid="login-username-input"
             />
           </div>
           <div>
@@ -64,6 +65,7 @@ export default function Login() {
               required
               minLength={8}
               maxLength={20}
+              data-testid="login-password-input"
             />
           </div>
           <div>
@@ -72,6 +74,7 @@ export default function Login() {
               id="loginButton"
               type="submit"
               disabled={isSubmitting}
+              data-testid="login-submit"
             >
               {isSubmitting ? 'Authenticating...' : 'Login'}
             </button>
@@ -80,8 +83,9 @@ export default function Login() {
         <p className="text-center text-gray-600 dark:text-gray-400 mt-4">
           Don not have an account?{' '}
           <Link
-            className="text-primary dark:text-light hover:text-dark dark:hover:text-primary transition duration-200"
             to="/register"
+            className="text-primary dark:text-light hover:text-dark dark:hover:text-primary transition duration-200"
+            data-testid="register-link"
           >
             Register Here
           </Link>

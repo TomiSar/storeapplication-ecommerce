@@ -66,6 +66,7 @@ export default function Register() {
             <input
               className={textFieldStyle}
               id="name"
+              data-testid="register-name"
               name="name"
               type="text"
               placeholder="Your Name"
@@ -83,6 +84,7 @@ export default function Register() {
               <input
                 className={textFieldStyle}
                 id="email"
+                data-testid="register-email"
                 name="email"
                 type="email"
                 placeholder="Your Email"
@@ -97,6 +99,7 @@ export default function Register() {
               <input
                 className={textFieldStyle}
                 id="mobileNumber"
+                data-testid="register-mobileNumber"
                 name="mobileNumber"
                 type="tel"
                 required
@@ -114,6 +117,7 @@ export default function Register() {
             <input
               className={textFieldStyle}
               id="password"
+              data-testid="register-password"
               name="password"
               type="password"
               placeholder="Your Password"
@@ -131,6 +135,7 @@ export default function Register() {
             <input
               className={textFieldStyle}
               id="confirmPassword"
+              data-testid="register-confirmPassword"
               name="confirmPassword"
               type="password"
               placeholder="Confirm Your Password"
@@ -147,6 +152,7 @@ export default function Register() {
             className="w-full px-6 py-2 text-white dark:text-black text-xl bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter rounded-md transition duration-200"
             type="submit"
             disabled={isSubmitting}
+            data-testid="register-submit"
           >
             {isSubmitting ? 'Registering...' : 'Register'}
           </button>

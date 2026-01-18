@@ -201,10 +201,11 @@ export default function Header() {
                 </div>
               ) : (
                 <NavLink
-                  to="/login"
                   className={({ isActive }) =>
                     isActive ? `underline ${navLinkClass}` : navLinkClass
                   }
+                  to="/login"
+                  data-testid="login-link"
                 >
                   Login
                 </NavLink>
