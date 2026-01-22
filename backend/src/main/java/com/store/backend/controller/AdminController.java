@@ -28,37 +28,47 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminController {
 
-  private final OrderService orderService;
-  private final ContactService contactService;
+    private final OrderService orderService;
+    private final ContactService contactService;
 
-  @GetMapping("/orders")
-  public ResponseEntity<List<OrderResponseDto>> getAllPendingOrders() {
-    return ResponseEntity.ok().body(orderService.getAllPendingOrders());
-  }
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderResponseDto>> getAllPendingOrders() {
+        return ResponseEntity.ok().body(orderService.getAllPendingOrders());
+    }
 
-  @PatchMapping("/orders/{orderId}/confirm")
-  public ResponseEntity<ResponseDto> confirmOrder(@PathVariable Long orderId) {
-    Order confirmedOrder = orderService.updateOrderStatus(orderId, ApplicationConstants.ORDER_STATUS_CONFIRMED);
-    return ResponseEntity
-        .ok(new ResponseDto("200", "Order " + confirmedOrder.getOrderId() + " has been confirmed."));
-  }
+    @PatchMapping("/orders/{orderId}/confirm")
+    public ResponseEntity<ResponseDto> confirmOrder(@PathVariable Long orderId) {
+//    Order confirmedOrder = orderService.updateOrderStatus(orderId, ApplicationConstants.ORDER_STATUS_CONFIRMED);
+//    return ResponseEntity
+//        .ok(new ResponseDto("200", "Order " + confirmedOrder.getOrderId() + " has been confirmed."));
 
-  @PatchMapping("/orders/{orderId}/cancel")
-  public ResponseEntity<ResponseDto> cancelOrder(@PathVariable Long orderId) {
-    Order canceledOrder = orderService.updateOrderStatus(orderId, ApplicationConstants.ORDER_STATUS_CANCELLED);
-    return ResponseEntity
-        .ok(new ResponseDto("200", "Order " + canceledOrder.getOrderId() + " has been canceled."));
-  }
+        // Custom Query version
+        orderService.updateOrderStatus(orderId, ApplicationConstants.ORDER_STATUS_CONFIRMED);
+        return ResponseEntity
+                .ok(new ResponseDto("200", "Order " + orderId + " has been confirmed."));
+    }
 
-  @PatchMapping("/message/{contactId}/close")
-  public ResponseEntity<ResponseDto> closeMessage(@PathVariable Long contactId) {
-    contactService.updateMessageStatus(contactId, ApplicationConstants.CLOSED_MESSAGE);
-    return ResponseEntity
-        .ok(new ResponseDto("200", "Contact message " + contactId + " has been closed."));
-  }
+    @PatchMapping("/orders/{orderId}/cancel")
+    public ResponseEntity<ResponseDto> cancelOrder(@PathVariable Long orderId) {
+//    Order canceledOrder = orderService.updateOrderStatus(orderId, ApplicationConstants.ORDER_STATUS_CANCELLED);
+//    return ResponseEntity
+//        .ok(new ResponseDto("200", "Order " + canceledOrder.getOrderId() + " has been canceled."));
 
-  @GetMapping("/messages")
-  public ResponseEntity<List<ContactResponseDto>> getAllOpenMessages() {
-    return ResponseEntity.ok(contactService.getAllOpenMessages());
-  }
+        // Custom Query version
+        orderService.updateOrderStatus(orderId, ApplicationConstants.ORDER_STATUS_CANCELLED);
+        return ResponseEntity
+                .ok(new ResponseDto("200", "Order " + orderId + " has been canceled."));
+    }
+
+    @PatchMapping("/message/{contactId}/close")
+    public ResponseEntity<ResponseDto> closeMessage(@PathVariable Long contactId) {
+        contactService.updateMessageStatus(contactId, ApplicationConstants.CLOSED_MESSAGE);
+        return ResponseEntity
+                .ok(new ResponseDto("200", "Contact message " + contactId + " has been closed."));
+    }
+
+    @GetMapping("/messages")
+    public ResponseEntity<List<ContactResponseDto>> getAllOpenMessages() {
+        return ResponseEntity.ok(contactService.getAllOpenMessages());
+    }
 }

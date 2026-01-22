@@ -1,11 +1,6 @@
 package com.store.backend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +8,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "CONTACTS")
+@NamedQuery(name = "Contact.findByStatus",
+        query = "SELECT c FROM Contact c WHERE c.status = :status")
+@NamedNativeQuery(name = "Contact.findByStatusNativeQuery",
+        query = "SELECT * FROM contacts WHERE status = :status",
+        resultClass = Contact.class)
 public class Contact extends BaseEntity {
 
     @Id

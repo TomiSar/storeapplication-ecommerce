@@ -14,5 +14,8 @@ public interface OrderService {
 
     List<OrderResponseDto> getAllPendingOrders();
 
-    Order updateOrderStatus(Long orderId, String orderStatus);
+//    Order updateOrderStatus(Long orderId, String orderStatus);
+
+    // Custom Query version
+    void updateOrderStatus(Long orderId, String orderStatus);
 }

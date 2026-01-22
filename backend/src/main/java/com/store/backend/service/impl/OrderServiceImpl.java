@@ -3,6 +3,8 @@ package com.store.backend.service.impl;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.*;
+import org.springframework.security.core.context.*;
 import org.springframework.stereotype.Service;
 
 import com.store.backend.dto.OrderItemResponseDto;
@@ -57,23 +59,38 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResponseDto> getCustomerOrders() {
         Customer customer = profileService.getAuthenticatedCustomer();
-        List<Order> orders = orderRepository.findByCustomerOrderByCreatedAtDesc(customer);
+//        List<Order> orders = orderRepository.findByCustomerOrderByCreatedAtDesc(customer);
+//        List<Order> orders = orderRepository.findOrdersByCustomer(customer);
+        List<Order> orders = orderRepository.findOrdersByCustomerNativeQuery(customer.getCustomerId());
         return orders.stream().map(this::mapToOrderResponseDTO).toList();
     }
 
     @Override
     public List<OrderResponseDto> getAllPendingOrders() {
+//        List<Order> orders = orderRepository
+//                .findByOrderStatus(ApplicationConstants.ORDER_STATUS_CREATED);
+//        List<Order> orders = orderRepository
+//                .findOrdersByStatus(ApplicationConstants.ORDER_STATUS_CREATED);
         List<Order> orders = orderRepository
-                .findByOrderStatus(ApplicationConstants.ORDER_STATUS_CREATED);
+                .findOrdersByStatusNativeQuery(ApplicationConstants.ORDER_STATUS_CREATED);
         return orders.stream().map(this::mapToOrderResponseDTO).toList();
     }
 
+    // Query to update order status
+//    @Override
+//    public Order updateOrderStatus(Long orderId, String orderStatus) {
+//        Order order = orderRepository.findById(orderId).orElseThrow(
+//                () -> new ResourceNotFoundException("Order", "OrderID", orderId.toString()));
+//        order.setOrderStatus(orderStatus);
+//        return orderRepository.save(order);
+//    }
+
+    // Custom Query version
     @Override
-    public Order updateOrderStatus(Long orderId, String orderStatus) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new ResourceNotFoundException("Order", "OrderID", orderId.toString()));
-        order.setOrderStatus(orderStatus);
-        return orderRepository.save(order);
+    public void updateOrderStatus(Long orderId, String orderStatus) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        orderRepository.updateOrderStatus(orderId, orderStatus, email);
     }
 
     /** Map Order entity to OrderResponseDto **/
