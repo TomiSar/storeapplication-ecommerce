@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
 import com.store.backend.dto.ProductDto;
@@ -19,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    @Cacheable("products")
     @Override
     public List<ProductDto> getProducts() {
         return productRepository.findAll()

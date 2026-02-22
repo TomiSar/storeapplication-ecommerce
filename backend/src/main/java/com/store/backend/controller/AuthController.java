@@ -3,7 +3,7 @@ package com.store.backend.controller;
 import com.store.backend.dto.*;
 import com.store.backend.entity.Customer;
 import com.store.backend.entity.Role;
-import com.store.backend.repository.CustomerRepository;
+import com.store.backend.repository.*;
 import com.store.backend.util.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +36,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
+    private final RoleRepository roleRepository;
     private final JwtUtil jwtUtil;
     private final CompromisedPasswordChecker compromisedPasswordChecker;
 
@@ -94,9 +95,8 @@ public class AuthController {
         BeanUtils.copyProperties(registerRequestDto, customer);
         // Encode the password before saving
         customer.setPasswordHash(passwordEncoder.encode(registerRequestDto.getPassword()));
-        Role role = new Role();
-        role.setName("ROLE_USER");
-        customer.setRoles(Set.of(role));
+        // Assign default role to the new user
+        roleRepository.findByName("ROLE_USER").ifPresent(role -> customer.setRoles(Set.of(role)));
         customerRepository.save(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful");
     }
