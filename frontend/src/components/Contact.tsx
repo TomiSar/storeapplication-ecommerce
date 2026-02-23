@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react';
-import { useActionData, useNavigation, useSubmit, Form } from 'react-router-dom';
+import { useActionData, useNavigation, useSubmit, Form, useLoaderData } from 'react-router-dom';
 import type { ContactResult } from '../actions/types';
+import type { Contact as ContactInfo } from '../types/contact';
 import { toastInfo, toastSuccess } from '../utils/toast';
 import FieldError from './form/FieldError';
 import PageTitle from './PageTitle';
 
 export default function Contact() {
+  const contactInfo = useLoaderData() as ContactInfo;
   const formRef = useRef<HTMLFormElement>(null);
   const navigation = useNavigation();
   const submit = useSubmit();
@@ -45,86 +47,105 @@ export default function Contact() {
         We’d love to hear from you! If you have any questions, feedback, or suggestions, please
         don’t hesitate to reach out.
       </p>
-      <Form
-        className="space-y-6 max-w-3xl mx-auto"
-        method="POST"
-        ref={formRef}
-        onSubmit={handleSubmit}
-      >
-        {/* Name */}
-        <div>
-          <label className={labelStyle} htmlFor="name">
-            Name
-          </label>
-          <input
-            className={textFieldStyle}
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Your Name"
-            required
-            minLength={3}
-            maxLength={30}
-          />
-          <FieldError actionData={actionData} field="name" />
+
+      {/* Contact Info + Form Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-w-[952px] mx-auto mt-8">
+        <div className="text-primary dark:text-light  p-6">
+          <h2 className="text-2xl font-bold mb-4">Contact Info</h2>
+          {contactInfo && (
+            <>
+              <p className="mb-4">
+                <strong>Phone:</strong> {contactInfo.phone}
+              </p>
+              <p className="mb-4">
+                <strong>Email:</strong> {contactInfo.email}
+              </p>
+              <p className="mb-4">
+                <strong>Address:</strong> {contactInfo.address}
+              </p>
+            </>
+          )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <Form
+          className="space-y-6 max-w-3xl mx-auto"
+          method="POST"
+          ref={formRef}
+          onSubmit={handleSubmit}
+        >
           <div>
-            <label className={labelStyle} htmlFor="email">
-              Email
+            <label className={labelStyle} htmlFor="name">
+              Name
             </label>
             <input
               className={textFieldStyle}
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Your Email"
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Your Name"
               required
+              minLength={3}
+              maxLength={30}
             />
-            <FieldError actionData={actionData} field="email" />
+            <FieldError actionData={actionData} field="name" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label className={labelStyle} htmlFor="email">
+                Email
+              </label>
+              <input
+                className={textFieldStyle}
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Your Email"
+                required
+              />
+              <FieldError actionData={actionData} field="email" />
+            </div>
+            <div>
+              <label className={labelStyle} htmlFor="mobileNumber">
+                Mobile Number
+              </label>
+              <input
+                className={textFieldStyle}
+                id="mobileNumber"
+                name="mobileNumber"
+                type="tel"
+                required
+                pattern="^\d{8,10}$"
+                title="Mobile number must be between 8 and 10 digits"
+                placeholder="Your Mobile Number"
+              />
+              <FieldError actionData={actionData} field="mobileNumber" />
+            </div>
           </div>
           <div>
-            <label className={labelStyle} htmlFor="mobileNumber">
-              Mobile Number
+            <label className={labelStyle} htmlFor="message">
+              Message
             </label>
-            <input
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Your Message"
               className={textFieldStyle}
-              id="mobileNumber"
-              name="mobileNumber"
-              type="tel"
               required
-              pattern="^\d{8,10}$"
-              title="Mobile number must be between 8 and 10 digits"
-              placeholder="Your Mobile Number"
-            />
-            <FieldError actionData={actionData} field="mobileNumber" />
+              minLength={5}
+              maxLength={500}
+            ></textarea>
+            <FieldError actionData={actionData} field="message" />
           </div>
-        </div>
-        <div>
-          <label className={labelStyle} htmlFor="message">
-            Message
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            placeholder="Your Message"
-            className={textFieldStyle}
-            required
-            minLength={5}
-            maxLength={500}
-          ></textarea>
-          <FieldError actionData={actionData} field="message" />
-        </div>
-        <div className="text-center">
-          <button
-            className="px-6 py-2 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter"
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Submitting...' : 'Submit'}
-          </button>
-        </div>
-      </Form>
+          <div className="text-center">
+            <button
+              className="px-6 py-2 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </button>
+          </div>
+        </Form>
+      </div>
     </div>
   );
 }

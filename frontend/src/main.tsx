@@ -29,6 +29,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Register from './components/Register';
 import {
   adminOrderLoader,
+  contactInfoLoader,
   messagesLoader,
   orderLoader,
   productsLoader,
@@ -45,7 +46,12 @@ const routeDefinitions = createRoutesFromElements(
     <Route index element={<Home />} loader={productsLoader} />
     <Route path="/home" element={<Home />} loader={productsLoader} />
     <Route path="/about" element={<About />} />
-    <Route path="/contact" element={<Contact />} action={contactAction} />
+    <Route
+      path="/contact"
+      element={<Contact />}
+      action={contactAction}
+      loader={contactInfoLoader}
+    />
     <Route path="/login" element={<Login />} action={loginAction} />
     <Route path="/register" element={<Register />} action={registerAction} />
     <Route path="/cart" element={<Cart />} />

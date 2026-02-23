@@ -4,6 +4,7 @@ import com.store.backend.entity.Customer;
 import com.store.backend.entity.Role;
 import com.store.backend.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Set;
 
+@Profile("prod")
 @Component
 @RequiredArgsConstructor
 // Custom AuthenticationProvider to authenticate users using email and password

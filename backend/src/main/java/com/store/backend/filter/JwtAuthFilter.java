@@ -31,16 +31,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final List<String> publicPaths;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
 
         if (null != authHeader && authHeader.startsWith("Bearer ")) {
             try {
-                // Extract JWT token from header
-                String jwtToken = authHeader.replace("Bearer ", ""); // Remove "Bearer " prefix
+                // Extract JWT token from header, remove "Bearer " prefix
+                String jwtToken = authHeader.replace("Bearer ", "");
                 SecretKey secretKey = jwtUtil.getSecretKey();
                 Claims claims = Jwts.parser().verifyWith(secretKey)
                         .build().parseSignedClaims(jwtToken).getPayload();
