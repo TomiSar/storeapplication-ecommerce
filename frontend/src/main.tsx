@@ -14,6 +14,7 @@ import App from './App';
 import './index.css';
 import About from './components/About';
 import AdminOrders from './components/admin/AdminOrders';
+import AdminUserRoles from './components/admin/AdminUserRoles';
 import Messages from './components/admin/Messages';
 import Cart from './components/Cart';
 import CheckoutForm from './components/CheckoutForm';
@@ -69,6 +70,7 @@ const routeDefinitions = createRoutesFromElements(
       <Route path="/orders" element={<Orders />} loader={orderLoader} />
       <Route path="/admin/orders" element={<AdminOrders />} loader={adminOrderLoader} />
       <Route path="/admin/messages" element={<Messages />} loader={messagesLoader} />
+      <Route path="/admin/users" element={<AdminUserRoles />} />
     </Route>
   </Route>,
 );

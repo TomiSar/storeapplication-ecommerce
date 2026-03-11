@@ -180,6 +180,11 @@ export default function Header() {
                                     Messages
                                   </Link>
                                 </li>
+                                <li>
+                                  <Link to="/admin/users" className={dropdownLinkClass}>
+                                    User Management
+                                  </Link>
+                                </li>
                               </ul>
                             )}
                           </li>
